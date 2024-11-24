@@ -1,0 +1,305 @@
+{
+  "resources/css/animate.min.css": {
+    "file": "resources/images/animate-DNTA05-W.css",
+    "src": "resources/css/animate.min.css",
+    "isEntry": true
+  },
+  "resources/css/bootstrap.min.css": {
+    "file": "resources/images/bootstrap-CUZPwuGD.css",
+    "src": "resources/css/bootstrap.min.css",
+    "isEntry": true
+  },
+  "resources/css/font-awesome.min.css": {
+    "file": "resources/images/font-awesome-Bf19YcyN.css",
+    "src": "resources/css/font-awesome.min.css",
+    "isEntry": true
+  },
+  "resources/css/main-color.css": {
+    "file": "resources/images/main-color-D29SLq4M.css",
+    "src": "resources/css/main-color.css",
+    "isEntry": true
+  },
+  "resources/css/nice-select.css": {
+    "file": "resources/images/nice-select-BpkahRcv.css",
+    "src": "resources/css/nice-select.css",
+    "isEntry": true
+  },
+  "resources/css/slick.min.css": {
+    "file": "resources/images/slick-B-mqJaR9.css",
+    "src": "resources/css/slick.min.css",
+    "isEntry": true
+  },
+  "resources/css/style.css": {
+    "file": "resources/images/style-3MF9FOIl.css",
+    "src": "resources/css/style.css",
+    "isEntry": true
+  },
+  "resources/images/404-bg.jpg": {
+    "file": "resources/images/404-bg-B9EDqZkP.jpg",
+    "src": "resources/images/404-bg.jpg"
+  },
+  "resources/images/about-us/bn01.jpg": {
+    "file": "resources/images/bn01-Bpl6I9Ri.jpg",
+    "src": "resources/images/about-us/bn01.jpg"
+  },
+  "resources/images/about-us/double-quotes.png": {
+    "file": "resources/images/double-quotes-B0lZ--1n.png",
+    "src": "resources/images/about-us/double-quotes.png"
+  },
+  "resources/images/bg-newsletter.jpg": {
+    "file": "resources/images/bg-newsletter-BBtIwlbO.jpg",
+    "src": "resources/images/bg-newsletter.jpg"
+  },
+  "resources/images/bg_tab-v1.png": {
+    "file": "resources/images/bg_tab-v1-Cn989Fhg.png",
+    "src": "resources/images/bg_tab-v1.png"
+  },
+  "resources/images/bg_tab-v4.png": {
+    "file": "resources/images/bg_tab-v4-Bn6I275G.png",
+    "src": "resources/images/bg_tab-v4.png"
+  },
+  "resources/images/bg_tab-v5.png": {
+    "file": "resources/images/bg_tab-v5-D2WFVpIY.png",
+    "src": "resources/images/bg_tab-v5.png"
+  },
+  "resources/images/blogpost/double-quote.png": {
+    "file": "resources/images/double-quote-CFJg-L_v.png",
+    "src": "resources/images/blogpost/double-quote.png"
+  },
+  "resources/images/color_bg1.jpg": {
+    "file": "resources/images/color_bg1-DmvIFgtY.jpg",
+    "src": "resources/images/color_bg1.jpg"
+  },
+  "resources/images/hero_bg.jpg": {
+    "file": "resources/images/hero_bg-DL7SOe_u.jpg",
+    "src": "resources/images/hero_bg.jpg"
+  },
+  "resources/images/home-01/bg_bold-title.png": {
+    "file": "resources/images/bg_bold-title-BynPIQeV.png",
+    "src": "resources/images/home-01/bg_bold-title.png"
+  },
+  "resources/images/home-01/bg_header-01.png": {
+    "file": "resources/images/bg_header-01-jfhT3KjU.png",
+    "src": "resources/images/home-01/bg_header-01.png"
+  },
+  "resources/images/home-01/bn-promotion-6.png": {
+    "file": "resources/images/bn-promotion-6-CH_Pzv1z.png",
+    "src": "resources/images/home-01/bn-promotion-6.png"
+  },
+  "resources/images/home-01/bn-special-03-sample.jpg": {
+    "file": "resources/images/bn-special-03-sample-CWFhl7cP.jpg",
+    "src": "resources/images/home-01/bn-special-03-sample.jpg"
+  },
+  "resources/images/home-01/bn_grid_01.png": {
+    "file": "resources/images/bn_grid_01-CxWGSpHN.png",
+    "src": "resources/images/home-01/bn_grid_01.png"
+  },
+  "resources/images/home-01/bn_grid_02.png": {
+    "file": "resources/images/bn_grid_02-CMuxeBPS.png",
+    "src": "resources/images/home-01/bn_grid_02.png"
+  },
+  "resources/images/home-01/bn_grid_03.png": {
+    "file": "resources/images/bn_grid_03-JskJsN5k.png",
+    "src": "resources/images/home-01/bn_grid_03.png"
+  },
+  "resources/images/home-01/bn_grid_04.png": {
+    "file": "resources/images/bn_grid_04-Dd7WDah4.png",
+    "src": "resources/images/home-01/bn_grid_04.png"
+  },
+  "resources/images/home-01/bn_grid_05.png": {
+    "file": "resources/images/bn_grid_05-B7djlJGE.png",
+    "src": "resources/images/home-01/bn_grid_05.png"
+  },
+  "resources/images/home-01/bn_grid_06.png": {
+    "file": "resources/images/bn_grid_06-CnJG3iyN.png",
+    "src": "resources/images/home-01/bn_grid_06.png"
+  },
+  "resources/images/home-01/main-slide-01.jpg": {
+    "file": "resources/images/main-slide-01-C3y6NdIE.jpg",
+    "src": "resources/images/home-01/main-slide-01.jpg"
+  },
+  "resources/images/home-01/main-slide-02.jpg": {
+    "file": "resources/images/main-slide-02-BueB-3mQ.jpg",
+    "src": "resources/images/home-01/main-slide-02.jpg"
+  },
+  "resources/images/home-01/main-slide-03.jpg": {
+    "file": "resources/images/main-slide-03-BgINw5st.jpg",
+    "src": "resources/images/home-01/main-slide-03.jpg"
+  },
+  "resources/images/home-01/tab-bg-01.png": {
+    "file": "resources/images/tab-bg-01-DTbo_Ytl.png",
+    "src": "resources/images/home-01/tab-bg-01.png"
+  },
+  "resources/images/home-01/tab-bg-02.png": {
+    "file": "resources/images/tab-bg-02-CHLd4emF.png",
+    "src": "resources/images/home-01/tab-bg-02.png"
+  },
+  "resources/images/home-01/tab-bg-03.png": {
+    "file": "resources/images/tab-bg-03-BGFAWm6F.png",
+    "src": "resources/images/home-01/tab-bg-03.png"
+  },
+  "resources/images/home-01/tab-bg-04.png": {
+    "file": "resources/images/tab-bg-04-CCEIN8JL.png",
+    "src": "resources/images/home-01/tab-bg-04.png"
+  },
+  "resources/images/home-02/banner-grid-01.jpg": {
+    "file": "resources/images/banner-grid-01-CO5Prw32.jpg",
+    "src": "resources/images/home-02/banner-grid-01.jpg"
+  },
+  "resources/images/home-02/banner-grid-02.jpg": {
+    "file": "resources/images/banner-grid-02-eRwD4RVI.jpg",
+    "src": "resources/images/home-02/banner-grid-02.jpg"
+  },
+  "resources/images/home-02/banner-grid-03.jpg": {
+    "file": "resources/images/banner-grid-03-KjjBMKYJ.jpg",
+    "src": "resources/images/home-02/banner-grid-03.jpg"
+  },
+  "resources/images/home-02/banner-grid-04.jpg": {
+    "file": "resources/images/banner-grid-04-RFNLAyBa.jpg",
+    "src": "resources/images/home-02/banner-grid-04.jpg"
+  },
+  "resources/images/home-02/banner-grid-05.jpg": {
+    "file": "resources/images/banner-grid-05-CA6knR3Y.jpg",
+    "src": "resources/images/home-02/banner-grid-05.jpg"
+  },
+  "resources/images/home-02/banner-grid-06.jpg": {
+    "file": "resources/images/banner-grid-06-WPt9qvtR.jpg",
+    "src": "resources/images/home-02/banner-grid-06.jpg"
+  },
+  "resources/images/home-02/banner-promotion-5.jpg": {
+    "file": "resources/images/banner-promotion-5-Bw3ohvB0.jpg",
+    "src": "resources/images/home-02/banner-promotion-5.jpg"
+  },
+  "resources/images/home-02/bgrd-newsletter.jpg": {
+    "file": "resources/images/bgrd-newsletter-D80TpdpL.jpg",
+    "src": "resources/images/home-02/bgrd-newsletter.jpg"
+  },
+  "resources/images/home-02/main-slide-01.jpg": {
+    "file": "resources/images/main-slide-01-CVuTuVcc.jpg",
+    "src": "resources/images/home-02/main-slide-01.jpg"
+  },
+  "resources/images/home-02/main-slide-02.jpg": {
+    "file": "resources/images/main-slide-02-0eKZjZ3z.jpg",
+    "src": "resources/images/home-02/main-slide-02.jpg"
+  },
+  "resources/images/home-02/main-slide-03.jpg": {
+    "file": "resources/images/main-slide-03-CP_7CMvk.jpg",
+    "src": "resources/images/home-02/main-slide-03.jpg"
+  },
+  "resources/images/home-03/bg_banner_pomotion_org.png": {
+    "file": "resources/images/bg_banner_pomotion_org-BIfDoEc1.png",
+    "src": "resources/images/home-03/bg_banner_pomotion_org.png"
+  },
+  "resources/images/home-03/biolife-banner__style-01.jpg": {
+    "file": "resources/images/biolife-banner__style-01-B1AlWnP0.jpg",
+    "src": "resources/images/home-03/biolife-banner__style-01.jpg"
+  },
+  "resources/images/home-03/green-slide-01.jpg": {
+    "file": "resources/images/green-slide-01-G7DfL0TH.jpg",
+    "src": "resources/images/home-03/green-slide-01.jpg"
+  },
+  "resources/images/home-03/green-slide-02.jpg": {
+    "file": "resources/images/green-slide-02-DvZ2BUc8.jpg",
+    "src": "resources/images/home-03/green-slide-02.jpg"
+  },
+  "resources/images/home-03/promotion_bg_green-version.jpg": {
+    "file": "resources/images/promotion_bg_green-version-CHrck5o3.jpg",
+    "src": "resources/images/home-03/promotion_bg_green-version.jpg"
+  },
+  "resources/images/home-03/slide-01.jpg": {
+    "file": "resources/images/slide-01-jiSXrOF0.jpg",
+    "src": "resources/images/home-03/slide-01.jpg"
+  },
+  "resources/images/home-03/slomotion_02_bg.png": {
+    "file": "resources/images/slomotion_02_bg-ClcurGhX.png",
+    "src": "resources/images/home-03/slomotion_02_bg.png"
+  },
+  "resources/images/home-04/banner-promotion01.jpg": {
+    "file": "resources/images/banner-promotion01-C6_dZpMA.jpg",
+    "src": "resources/images/home-04/banner-promotion01.jpg"
+  },
+  "resources/images/home-04/light-main_slide_01.jpg": {
+    "file": "resources/images/light-main_slide_01-Izkb-G1J.jpg",
+    "src": "resources/images/home-04/light-main_slide_01.jpg"
+  },
+  "resources/images/home-04/light-main_slide_02.jpg": {
+    "file": "resources/images/light-main_slide_02-BeTaFuXW.jpg",
+    "src": "resources/images/home-04/light-main_slide_02.jpg"
+  },
+  "resources/images/home-04/light-main_slide_03.jpg": {
+    "file": "resources/images/light-main_slide_03-BeShKfu9.jpg",
+    "src": "resources/images/home-04/light-main_slide_03.jpg"
+  },
+  "resources/images/home-04/main_slide.jpg": {
+    "file": "resources/images/main_slide-CAz5bmty.jpg",
+    "src": "resources/images/home-04/main_slide.jpg"
+  },
+  "resources/images/home-05/bn_style-15.jpg": {
+    "file": "resources/images/bn_style-15-Urs-iR7B.jpg",
+    "src": "resources/images/home-05/bn_style-15.jpg"
+  },
+  "resources/images/home-05/main-slide.jpg": {
+    "file": "resources/images/main-slide-Cv1sHOac.jpg",
+    "src": "resources/images/home-05/main-slide.jpg"
+  },
+  "resources/images/megamenu/megamenu-bg-02.jpg": {
+    "file": "resources/images/megamenu-bg-02-BWCFuQ8l.jpg",
+    "src": "resources/images/megamenu/megamenu-bg-02.jpg"
+  },
+  "resources/images/megamenu/vegetable-mega-bg.png": {
+    "file": "resources/images/vegetable-mega-bg-ybjZ40X0.png",
+    "src": "resources/images/megamenu/vegetable-mega-bg.png"
+  },
+  "resources/images/top_banner_shopping_cart.png": {
+    "file": "resources/images/top_banner_shopping_cart-Dnv8fEbd.png",
+    "src": "resources/images/top_banner_shopping_cart.png"
+  },
+  "resources/js/biolife.framework.js": {
+    "file": "resources/images/biolife.framework-DFs4a337.js",
+    "name": "biolife.framework",
+    "src": "resources/js/biolife.framework.js",
+    "isEntry": true
+  },
+  "resources/js/bootstrap.min.js": {
+    "file": "resources/images/bootstrap.min-BSj2BckH.js",
+    "name": "bootstrap.min",
+    "src": "resources/js/bootstrap.min.js",
+    "isEntry": true
+  },
+  "resources/js/functions.js": {
+    "file": "resources/images/functions-CUybH0Rw.js",
+    "name": "functions",
+    "src": "resources/js/functions.js",
+    "isEntry": true
+  },
+  "resources/js/jquery-3.4.1.min.js": {
+    "file": "resources/images/jquery-3.4.1.min-ClL3s0AQ.js",
+    "name": "jquery-3.4.1.min",
+    "src": "resources/js/jquery-3.4.1.min.js",
+    "isEntry": true
+  },
+  "resources/js/jquery.countdown.min.js": {
+    "file": "resources/images/jquery.countdown.min-DaYB1asJ.js",
+    "name": "jquery.countdown.min",
+    "src": "resources/js/jquery.countdown.min.js",
+    "isEntry": true
+  },
+  "resources/js/jquery.nice-select.min.js": {
+    "file": "resources/images/jquery.nice-select.min-BpWpCirC.js",
+    "name": "jquery.nice-select.min",
+    "src": "resources/js/jquery.nice-select.min.js",
+    "isEntry": true
+  },
+  "resources/js/jquery.nicescroll.min.js": {
+    "file": "resources/images/jquery.nicescroll.min-NiWfZjuh.js",
+    "name": "jquery.nicescroll.min",
+    "src": "resources/js/jquery.nicescroll.min.js",
+    "isEntry": true
+  },
+  "resources/js/slick.min.js": {
+    "file": "resources/images/slick.min-DC1lKvqR.js",
+    "name": "slick.min",
+    "src": "resources/js/slick.min.js",
+    "isEntry": true
+  }
+}
