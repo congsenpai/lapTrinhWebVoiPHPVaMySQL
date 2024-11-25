@@ -9,6 +9,6 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home'); 
+Route::get('/', function () {
+    return view('index');
+})->name('index'); 
