@@ -11,14 +11,39 @@
                 </div>
                 <div class="top-bar right col-md-6" style="display: flex!important; justify-content:flex-end">
                     <ul class="social-list" style="padding: 8px;display:flex; align-item:center">
-                        <li><a href="#"><i style="padding: 8px;display:flex; align-item:center" class="fa-brands fa-twitter" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i style="padding: 8px;display:flex; align-item:center" class="fa-brands fa-facebook" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i style="padding: 8px;display:flex; align-item:center" class="fa-brands fa-pinterest" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i style="padding: 8px;display:flex; align-item:center"
+                                    class="fa-brands fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i style="padding: 8px;display:flex; align-item:center"
+                                    class="fa-brands fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i style="padding: 8px;display:flex; align-item:center"
+                                    class="fa-brands fa-pinterest" aria-hidden="true"></i></a></li>
                     </ul>
-                    <ul class="horizontal-menu">
-                        <li><a href="#" class="login-link"><i class="biolife-icon icon-login"></i>Đăng ký/Đăng
-                                nhập</a></li>
+                    <ul class="horizontal-menu"; style="display:flex;justify-content:center; align-item:center">
+                        @auth
+                            <li>
+                                <a href="#" class="user-link" style="font-weight: bold">
+                                    <i class="biolife-icon icon-user"></i>Xin chào, {{ Auth::user()->name }}
+                                </a>
+
+                            </li>
+                            <li style="padding: 0; text-align:center; display:flex;justify-content:center; align-items:center">
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="user-link"
+                                        style="padding: 0; border: none; background: none; color: white; font-size: 14px; line-height:0">
+                                        Đăng xuất
+                                    </button>
+                                </form>
+                            </li>
+                        @else
+                            <li>
+                                <a href="{{ route('login') }}" class="login-link">
+                                    <i class="biolife-icon icon-login"></i>Đăng ký/Đăng nhập
+                                </a>
+                            </li>
+                        @endauth
                     </ul>
+
                 </div>
             </div>
         </div>
@@ -26,7 +51,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 col-md-2 col-md-6 col-xs-6">
-                        <a href="../index.html" class="biolife-logo"><img
+                        <a href="{{route('home')}}" class="biolife-logo"><img
                                 src="{{ Vite::asset('resources/images/organic-3.png') }}" alt="biolife logo"
                                 width="135" height="34"></a>
                     </div>

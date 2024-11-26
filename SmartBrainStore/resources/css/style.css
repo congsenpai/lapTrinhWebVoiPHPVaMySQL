@@ -829,7 +829,7 @@ body{
     margin-right: 6px;
 }
 .header-top .left .horizontal-menu>li{
-    padding: 9px 19px;
+    padding: 9px 9px;
     border-left: 1px solid rgba(255,255,255, 0.33);
 }
 .header-top .left .horizontal-menu>li:first-child{

@@ -20,6 +20,10 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Vite CSS and JS -->
     @vite(['resources/css/bootstrap.min.css', 'resources/css/animate.min.css', 'resources/css/nice-select.css', 'resources/css/slick.min.css', 'resources/css/style.css', 'resources/css/main-color.css', 'resources/js/jquery-3.4.1.min.js', 'resources/js/bootstrap.min.js', 'resources/js/bootstrap.js', 'resources/js/jquery.countdown.min.js', 'resources/js/jquery.nice-select.min.js', 'resources/js/jquery.nicescroll.min.js', 'resources/js/slick.min.js', 'resources/js/biolife.framework.js', 'resources/js/functions.js'])
+    {{-- Other package --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 
 
@@ -27,6 +31,24 @@
 
     @include('layouts.header')
     <main>
+        <script>
+            @if (session('success'))
+                toastr.success("{{ session('success') }}", '', {
+                    timeOut: 2000,
+                    positionClass: 'toast-bottom-right'
+                });
+            @endif
+        
+            @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                    toastr.error("{{ $error }}", '', {
+                        timeOut: 2000,
+                        positionClass: 'toast-bottom-right'
+                    });
+                @endforeach
+            @endif
+        </script>
+        
         @yield('content')
     </main>
     @include('layouts.footer')
