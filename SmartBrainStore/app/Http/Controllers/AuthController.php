@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -50,21 +53,23 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed', // đảm bảo mật khẩu được xác nhận
+            'password' => 'required|string|min:6|confirmed',
         ]);
-
+    
         try {
-
+            // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
+            $hashedPassword = Hash::make($request->password);
+    
             // Tạo người dùng mới
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => $request->password, // Laravel tự động mã hóa mật khẩu
+                'password' => $hashedPassword, // Mã hóa mật khẩu
             ]);
-
+    
             // Đăng nhập người dùng sau khi tạo tài khoản
             Auth::login($user);
-
+    
             // Flash thông báo thành công
             session()->flash('success', 'Đăng ký thành công!');
             return redirect()->route('home');
@@ -74,13 +79,123 @@ class AuthController extends Controller
             return back();
         }
     }
+    
 
 
 
-    // Đăng xuất
-    public function logout()
+    // Đăng xuất// Đăng xuất
+    public function logout(Request $request)
     {
+        // Lấy người dùng hiện tại
+        $user = Auth::user();
+
+        if ($user) {
+            // Xóa remember_token trong cơ sở dữ liệu
+            $user->remember_token = null;
+            $user->save();
+        }
+
+        // Đăng xuất người dùng
         Auth::logout();
+
+        // Hủy session và token
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Xóa cookie remember_token
+        Cookie::queue(Cookie::forget('remember_token'));
+
+        // Chuyển hướng về trang đăng nhập
         return redirect()->route('login');
     }
+
+
+
+    // Hiển thị form quên mật khẩu
+    public function showForgotPassForm()
+    {
+        return view('auth.forgotpassword');
+    }
+    // Xử lý logic quên mật khẩu
+    public function forgotPassword(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+    ]);
+
+    // Kiểm tra email có tồn tại
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+        return back()->with('error', 'Email không tồn tại trong hệ thống!');
+    }
+
+    // Tạo token reset
+    $token = Hash::make($request->email . now());
+    $expiresAt = now()->addMinutes(60);  // Set expiration time to 60 minutes from now
+    
+    DB::table('password_resets')->insert([
+        'email' => $request->email,
+        'token' => $token,
+        'created_at' => now(),
+        'expired_at' => $expiresAt,  // Add expiration time
+    ]);
+    
+    // Gửi email HTML
+    Mail::send([], [], function ($message) use ($request, $token) {
+        $message->to($request->email)
+            ->subject('Đặt lại mật khẩu của bạn')
+            ->html( // Sử dụng phương thức `html` để gửi nội dung HTML
+                '<html><body>' .
+                    '<h1>Đặt lại mật khẩu của bạn</h1>' .
+                    '<p>Nhấn vào nút bên dưới để đặt lại mật khẩu:</p>' .
+                    '<a href="' . route('resetpassword', ['token' => $token]) . '" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Đặt lại mật khẩu</a>' .
+                    '</body></html>'
+            );
+    });
+
+    // Hiển thị thông báo
+    return back()->with('success', 'Liên kết đặt lại mật khẩu đã được gửi đến email của bạn!');
+}
+
+    // reset mật khẩu
+    public function resetPassword(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'password' => 'required|min:6|confirmed', // Ensure confirmation field is present
+            'token' => 'required',
+        ]);
+    
+        // Retrieve the password reset entry by token
+        $passwordReset = DB::table('password_resets')->where('token', $request->token)->first();
+    
+        // Check if the reset token exists
+        if (!$passwordReset) {
+            return back()->with('error', 'Token không hợp lệ hoặc đã hết hạn!');
+        }
+    
+        // Check if the token has expired
+        $currentTime = now();
+        if ($currentTime->gt(\Carbon\Carbon::parse($passwordReset->expired_at))) {
+            return back()->with('error', 'Token đã hết hạn!');
+        }
+    
+        // Find the user associated with this email
+        $user = User::where('email', $passwordReset->email)->first();
+    
+        if ($user) {
+            // Update the user's password
+            $user->update(['password' => Hash::make($request->password)]);
+    
+            // Delete the token from the password_resets table to prevent reuse
+            DB::table('password_resets')->where('token', $request->token)->delete();
+    
+            // Redirect to login page with success message
+            return redirect()->route('login')->with('success', 'Mật khẩu đã được cập nhật thành công!');
+        } else {
+            return back()->with('error', 'Không tìm thấy người dùng.');
+        }
+    }
+    
 }

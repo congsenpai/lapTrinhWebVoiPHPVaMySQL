@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Foundation\Auth\User as Authenticatable; 
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
@@ -25,19 +26,4 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
-    // Mã hóa mật khẩu khi tạo hoặc cập nhật
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($user) {
-            $user->password = Hash::make($user->password);
-        });
-
-        static::updating(function ($user) {
-            if ($user->password) {
-                $user->password = Hash::make($user->password);
-            }
-        });
-    }
 }

@@ -32,7 +32,7 @@
                                 </p>
                                 <p class="form-row wrap-btn">
                                     <button class="btn btn-submit btn-bold" type="submit">Đăng ký</button>
-                                    <a href="#" class="link-to-help">Quên mật khẩu?</a>
+                                    <a href="{{route('forgotpassword')}}" class="link-to-help">Quên mật khẩu?</a>
                                 </p>
                             </form>
                         </div>
