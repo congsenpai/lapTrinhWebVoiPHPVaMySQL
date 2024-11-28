@@ -26,7 +26,8 @@
                                 </a>
 
                             </li>
-                            <li style="padding: 0; text-align:center; display:flex;justify-content:center; align-items:center">
+                            <li
+                                style="padding: 0; text-align:center; display:flex;justify-content:center; align-items:center">
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="user-link"
@@ -51,7 +52,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 col-md-2 col-md-6 col-xs-6">
-                        <a href="{{route('home')}}" class="biolife-logo"><img
+                        <a href="{{ route('home') }}" class="biolife-logo"><img
                                 src="{{ Vite::asset('resources/images/organic-3.png') }}" alt="biolife logo"
                                 width="135" height="34"></a>
                     </div>
@@ -61,7 +62,7 @@
                                 data-menuname="main menu">
                                 <li class="menu-item"><a href="/index.html">Trang chủ</a></li>
                                 <li class="menu-item menu-item-has-children has-megamenu">
-                                    <a href="#" class="menu-name" data-title="Shop">Cửa hàng</a>
+                                    <a href="#" class="menu-name">Cửa hàng</a>
                                     <div class="wrap-megamenu lg-width-900 md-width-750">
                                         <div class="mega-content">
                                             <div
@@ -120,7 +121,7 @@
                                     </div>
                                 </li>
                                 <li class="menu-item menu-item-has-children has-child">
-                                    <a href="#" class="menu-name" data-title="Products">Sản phẩm</a>
+                                    <a href="#" class="menu-name">Sản phẩm</a>
                                     <ul class="sub-menu">
                                         <li class="menu-item"><a href="#">Trái cây tươi</a></li>
                                         <li class="menu-item"><a href="#">Quà tặng</a></li>
@@ -339,7 +340,7 @@
                                         </div>
                                     </li>
                                     <li class="menu-item menu-item-has-children has-megamenu">
-                                        <a href="#" class="menu-name" data-title="Vegetables"><i
+                                        <a href="#" class="menu-name"><i
                                                 class="biolife-icon icon-broccoli-1"></i>Trái cây đông lạnh</a>
                                         <div class="wrap-megamenu lg-width-900 md-width-640 background-mega-01">
                                             <div class="mega-content">
@@ -402,115 +403,86 @@
                                         </div>
                                     </li>
                                     <li class="menu-item menu-item-has-children has-megamenu">
-                                        <a href="#" class="menu-name" data-title="Fresh Berries"><i
-                                                class="biolife-icon icon-grape"></i>Fresh Berries</a>
+                                        <a href="#" class="menu-name"><i
+                                                class="biolife-icon icon-grape"></i>Trái cây sấy</a>
                                         <div class="wrap-megamenu lg-width-900 md-width-640 background-mega-02">
                                             <div class="mega-content">
-                                                <div class="row">
+                                                <div class="row" style="height: 450px !important">
                                                     <div
                                                         class="col-lg-3 col-md-4 sm-col-12 md-margin-bottom-83 xs-margin-bottom-25">
                                                         <div class="wrap-custom-menu vertical-menu">
-                                                            <h4 class="menu-title">Fresh Berries</h4>
+                                                            <h4 class="menu-title">Trái cây sấy khô</h4>
                                                             <ul class="menu">
-                                                                <li><a href="#">Fruit & Nut Gifts</a></li>
-                                                                <li><a href="#">Mixed Fruits</a></li>
-                                                                <li><a href="#">Oranges</a></li>
-                                                                <li><a href="#">Bananas & Plantains</a></li>
-                                                                <li><a href="#">Fresh Gala Apples</a></li>
-                                                                <li><a href="#">Berries</a></li>
-                                                                <li><a href="#">Pears</a></li>
-                                                                <li><a href="#">Produce</a></li>
-                                                                <li><a href="#">Snack Foods</a></li>
+                                                                <li><a href="#">Sấy nguyên quả</a></li>
+                                                                <li><a href="#">Sấy miếng</a></li>
+                                                                <li><a href="#">Sấy thăng hoa</a></li>
+                                                                <li><a href="#">Sấy giòn mix loại</a></li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div
                                                         class="col-lg-3 col-md-4 sm-col-12 lg-padding-left-23 xs-margin-bottom-36px md-margin-bottom-0">
                                                         <div class="wrap-custom-menu vertical-menu">
-                                                            <h4 class="menu-title">Gifts</h4>
+                                                            <h4 class="menu-title">Sấy dẻo</h4>
                                                             <ul class="menu">
-                                                                <li><a href="#">Non-Dairy Coffee Creamers</a>
-                                                                </li>
-                                                                <li><a href="#">Coffee Creamers</a></li>
-                                                                <li><a href="#">Mayonnaise</a></li>
-                                                                <li><a href="#">Almond Milk</a></li>
-                                                                <li><a href="#">Ghee</a></li>
-                                                                <li><a href="#">Beverages</a></li>
-                                                                <li><a href="#">Ranch Salad Dressings</a></li>
-                                                                <li><a href="#">Hemp Milk</a></li>
-                                                                <li><a href="#">Nuts & Seeds</a></li>
+                                                                <li><a href="#">Sấy dẻo thái lát</a></li>
+                                                                <li><a href="#">Sấy dẻo nguyên quả</a></li>
+                                                                <li><a href="#">Sấy dẻo thêm đường</a></li>
+                                                                <li><a href="#">Sấy dẻo mật ong</a></li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div
                                                         class="col-lg-6 col-md-4 sm-col-12 lg-padding-left-25 md-padding-top-55">
                                                         <div class="biolife-banner layout-01">
-                                                            <h3 class="top-title">Farm Fresh</h3>
-                                                            <p class="content"> All the Lorem Ipsum generators on the
-                                                                Internet tend.</p>
-                                                            <b class="bottomm-title">Berries Series</b>
+                                                            <h3 class="top-title">Nông trại sạch</h3>
+                                                            <p class="content">Tất cả các khâu chăm sóc sản phẩm đều
+                                                                được kiểm duyệt</p>
+                                                            <b class="bottomm-title">Sấy siêu sạch</b>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="menu-item"><a href="#" class="menu-name"
-                                            data-title="Ocean Foods"><i class="biolife-icon icon-fish"></i>Ocean
-                                            Foods</a></li>
                                     <li class="menu-item menu-item-has-children has-child">
-                                        <a href="#" class="menu-name" data-title="Butter & Eggs"><i
-                                                class="biolife-icon icon-honey"></i>Butter & Eggs</a>
+                                        <a href="#" class="menu-name"><i
+                                                class="biolife-icon icon-honey"></i>Trái cây chế biến</a>
                                         <ul class="sub-menu">
-                                            <li class="menu-item"><a href="#">Omelettes</a></li>
-                                            <li class="menu-item"><a href="#">Breakfast Scrambles</a></li>
+                                            <li class="menu-item"><a href="#">Nước ép</a></li>
+                                            <li class="menu-item"><a href="#">Mứt</a></li>
                                             <li class="menu-item menu-item-has-children has-child"><a href="#"
-                                                    class="menu-name" data-title="Eggs & other considerations">Eggs &
-                                                    other considerations</a>
+                                                    class="menu-name">Thạch</a>
                                                 <ul class="sub-menu">
-                                                    <li class="menu-item"><a href="#">Classic Breakfast</a></li>
-                                                    <li class="menu-item"><a href="#">Huevos Rancheros</a></li>
-                                                    <li class="menu-item"><a href="#">Everything Egg
-                                                            Sandwich</a></li>
-                                                    <li class="menu-item"><a href="#">Egg Sandwich</a></li>
-                                                    <li class="menu-item"><a href="#">Vegan Burrito</a></li>
-                                                    <li class="menu-item"><a href="#">Biscuits and Gravy</a>
-                                                    </li>
-                                                    <li class="menu-item"><a href="#">Bacon Avo Egg Sandwich</a>
-                                                    </li>
+                                                    <li class="menu-item"><a href="#">Thạch rau câu</a></li>
+                                                    <li class="menu-item"><a href="#">Thạch trái cây</a></li>
+                                                    <li class="menu-item"><a href="#">Thạch gelatin</a></li>
+                                                    <li class="menu-item"><a href="#">Thạch caramel</a></li>
+                                                    <li class="menu-item"><a href="#">Thạch sương sáo</a></li>
                                                 </ul>
                                             </li>
-                                            <li class="menu-item"><a href="#">Griddle</a></li>
                                             <li class="menu-item menu-item-has-children has-child"><a href="#"
-                                                    class="menu-name" data-title="Sides & Extras">Sides & Extras</a>
+                                                    class="menu-name">Kem</a>
                                                 <ul class="sub-menu">
-                                                    <li class="menu-item"><a href="#">Breakfast Burrito</a></li>
-                                                    <li class="menu-item"><a href="#">Crab Cake Benedict</a>
+                                                    <li class="menu-item"><a href="#">Kem que</a></li>
+                                                    <li class="menu-item"><a href="#">Kem ly</a>
                                                     </li>
-                                                    <li class="menu-item"><a href="#">Corned Beef Hash</a></li>
-                                                    <li class="menu-item"><a href="#">Steak & Eggs</a></li>
-                                                    <li class="menu-item"><a href="#">Oatmeal</a></li>
-                                                    <li class="menu-item"><a href="#">Fruit & Yogurt Parfait</a>
-                                                    </li>
+                                                    <li class="menu-item"><a href="#">Kem hộp</a></li>
+                                                    <li class="menu-item"><a href="#">Kem ốc quế</a></li>
+                                                    <li class="menu-item"><a href="#">Kem đá bào</a></li>
                                                 </ul>
                                             </li>
-                                            <li class="menu-item"><a href="#">Biscuits</a></li>
-                                            <li class="menu-item"><a href="#">Seasonal Fruit Plate</a></li>
                                         </ul>
                                     </li>
                                     <li class="menu-item"><a href="#" class="menu-title"><i
-                                                class="biolife-icon icon-fast-food"></i>Fastfood</a></li>
+                                                class="biolife-icon icon-fast-food"></i>Trái cây ngâm</a></li>
                                     <li class="menu-item"><a href="#" class="menu-title"><i
-                                                class="biolife-icon icon-beef"></i>Fresh Meat</a></li>
+                                                class="biolife-icon icon-beef"></i>Quà tặng</a></li>
                                     <li class="menu-item"><a href="#" class="menu-title"><i
-                                                class="biolife-icon icon-onions"></i>Fresh Onion</a></li>
+                                                class="biolife-icon icon-onions"></i>Trái cây nhập khẩu</a></li>
                                     <li class="menu-item"><a href="#" class="menu-title"><i
-                                                class="biolife-icon icon-avocado"></i>Papaya & Crisps</a></li>
-                                    <li class="menu-item"><a href="#" class="menu-title"><i
-                                                class="biolife-icon icon-contain"></i>Oatmeal</a></li>
-                                    <li class="menu-item"><a href="#" class="menu-title"><i
-                                                class="biolife-icon icon-fresh-juice"></i>Fresh Bananas & Plantains</a>
-                                    </li>
+                                                class="biolife-icon icon-avocado"></i>Trái cây đóng hộp</a></li>
+
                                 </ul>
                             </div>
                         </div>
