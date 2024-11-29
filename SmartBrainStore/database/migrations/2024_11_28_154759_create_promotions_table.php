@@ -9,6 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    // database/migrations/xxxx_xx_xx_create_promotions_table.php
     public function up()
     {
         Schema::create('promotions', function (Blueprint $table) {
@@ -19,11 +20,15 @@ return new class extends Migration
             $table->decimal('discount_value', 10, 2);
             $table->date('start_date');
             $table->date('end_date');
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 
-    public function down()
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::dropIfExists('promotions');
     }

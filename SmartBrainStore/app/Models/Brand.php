@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-// app/Models/Category.php
-class Category extends Model
+// app/Models/Brand.php
+class Brand extends Model
 {
     protected $fillable = ['name', 'description'];
 
@@ -14,4 +14,3 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 }
-

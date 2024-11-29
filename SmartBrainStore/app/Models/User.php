@@ -3,26 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
-
-
+// app/Models/User.php
 class User extends Authenticatable
 {
-    use HasFactory;
+    protected $fillable = ['name', 'email', 'password', 'phone', 'address', 'role'];
 
-    // Chỉ định bảng mà model này sẽ tương tác
-    protected $table = 'users';
-
-    // Các thuộc tính có thể gán mass-assignment
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
     protected $hidden = [
         'password',
     ];

@@ -9,10 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    // database/migrations/xxxx_xx_xx_create_promotion_products_table.php
+    public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('promotion_products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('promotion_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('promotion_products');
     }
 };

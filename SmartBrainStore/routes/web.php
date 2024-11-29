@@ -21,7 +21,8 @@ Route::post('/forgotpassword', [AuthController::class, 'forgotPassword'])->name(
 Route::get('/resetpassword/{token}', function ($token) {
     return view('auth.resetpassword', ['token' => $token]);
 })->name('resetpassword');
-Route::post('/resetpassword', [AuthController::class, 'resetPassword'])->name('updatepassword');
+
+Route::post('resetpassword', [AuthController::class, 'resetPassword'])->name('updatepassword');
 
 // điều hướng đến home
 Route::get('/home', function () {

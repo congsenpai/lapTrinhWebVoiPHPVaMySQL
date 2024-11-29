@@ -9,6 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    // database/migrations/xxxx_xx_xx_create_coupons_table.php
     public function up()
     {
         Schema::create('coupons', function (Blueprint $table) {
@@ -20,11 +21,14 @@ return new class extends Migration
             $table->integer('used_count')->default(0);
             $table->date('start_date');
             $table->date('end_date');
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::dropIfExists('coupons');
     }

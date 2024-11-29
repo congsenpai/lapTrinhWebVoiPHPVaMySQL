@@ -92,7 +92,6 @@ class AuthController extends Controller
         if ($user) {
             // Xóa remember_token trong cơ sở dữ liệu
             $user->remember_token = null;
-            $user->save();
         }
 
         // Đăng xuất người dùng
@@ -116,49 +115,51 @@ class AuthController extends Controller
     {
         return view('auth.forgotpassword');
     }
-    // Xử lý logic quên mật khẩu
     public function forgotPassword(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-    ]);
-
-    // Kiểm tra email có tồn tại
-    $user = User::where('email', $request->email)->first();
-
-    if (!$user) {
-        return back()->with('error', 'Email không tồn tại trong hệ thống!');
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+    
+        // Kiểm tra email có tồn tại
+        $user = User::where('email', $request->email)->first();
+    
+        if (!$user) {
+            return back()->with('error', 'Email không tồn tại trong hệ thống!');
+        }
+    
+        // Tạo token reset sử dụng Hash::make() để hash email kết hợp với thời gian
+        $token = Hash::make($request->email . now());
+    
+        // Mã hóa lại token bằng base64 để tránh các ký tự đặc biệt
+        $encodedToken = base64_encode($token);  // Mã hóa token thành base64
+    
+        $expiresAt = now()->addMinutes(60);  // Set expiration time to 60 minutes from now
+    
+        // Lưu token vào bảng password_resets
+        DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => now(),
+            'expired_at' => $expiresAt,  // Thêm thời gian hết hạn
+        ]);
+        
+        // Gửi email HTML
+        Mail::send([], [], function ($message) use ($request, $encodedToken) {
+            $message->to($request->email)
+                ->subject('Đặt lại mật khẩu của bạn')
+                ->html( // Sử dụng phương thức `html` để gửi nội dung HTML
+                    '<html><body>' .
+                        '<h1>Đặt lại mật khẩu của bạn</h1>' .
+                        '<p>Nhấn vào nút bên dưới để đặt lại mật khẩu:</p>' .
+                        '<a href="' . route('resetpassword', ['token' => $encodedToken]) . '" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Đặt lại mật khẩu</a>' .
+                        '</body></html>'
+                );
+        });
+    
+        // Hiển thị thông báo
+        return back()->with('success', 'Liên kết đặt lại mật khẩu đã được gửi đến email của bạn!');
     }
-
-    // Tạo token reset
-    $token = Hash::make($request->email . now());
-    $expiresAt = now()->addMinutes(60);  // Set expiration time to 60 minutes from now
-    
-    DB::table('password_resets')->insert([
-        'email' => $request->email,
-        'token' => $token,
-        'created_at' => now(),
-        'expired_at' => $expiresAt,  // Add expiration time
-    ]);
-    
-    // Gửi email HTML
-    Mail::send([], [], function ($message) use ($request, $token) {
-        $message->to($request->email)
-            ->subject('Đặt lại mật khẩu của bạn')
-            ->html( // Sử dụng phương thức `html` để gửi nội dung HTML
-                '<html><body>' .
-                    '<h1>Đặt lại mật khẩu của bạn</h1>' .
-                    '<p>Nhấn vào nút bên dưới để đặt lại mật khẩu:</p>' .
-                    '<a href="' . route('resetpassword', ['token' => $token]) . '" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Đặt lại mật khẩu</a>' .
-                    '</body></html>'
-            );
-    });
-
-    // Hiển thị thông báo
-    return back()->with('success', 'Liên kết đặt lại mật khẩu đã được gửi đến email của bạn!');
-}
-
-    // reset mật khẩu
     public function resetPassword(Request $request)
     {
         // Validate input
@@ -167,8 +168,11 @@ class AuthController extends Controller
             'token' => 'required',
         ]);
     
-        // Retrieve the password reset entry by token
-        $passwordReset = DB::table('password_resets')->where('token', $request->token)->first();
+        // Giải mã token trước khi so sánh
+        $decodedToken = base64_decode($request->token);  // Giải mã lại token từ base64
+    
+        // Retrieve the password reset entry by token (đã giải mã)
+        $passwordReset = DB::table('password_resets')->where('token', $decodedToken)->first();
     
         // Check if the reset token exists
         if (!$passwordReset) {
@@ -189,7 +193,7 @@ class AuthController extends Controller
             $user->update(['password' => Hash::make($request->password)]);
     
             // Delete the token from the password_resets table to prevent reuse
-            DB::table('password_resets')->where('token', $request->token)->delete();
+            DB::table('password_resets')->where('token', $decodedToken)->delete();
     
             // Redirect to login page with success message
             return redirect()->route('login')->with('success', 'Mật khẩu đã được cập nhật thành công!');
@@ -197,5 +201,5 @@ class AuthController extends Controller
             return back()->with('error', 'Không tìm thấy người dùng.');
         }
     }
-    
+        
 }

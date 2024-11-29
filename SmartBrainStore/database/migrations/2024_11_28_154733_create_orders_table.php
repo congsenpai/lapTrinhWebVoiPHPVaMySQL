@@ -9,20 +9,25 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    // database/migrations/xxxx_xx_xx_create_orders_table.php
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->decimal('total_amount', 10, 2);
             $table->decimal('discount', 10, 2)->default(0.00);
-            $table->foreignId('coupon_id')->nullable()->constrained('coupons')->onDelete('set null');
+            $table->foreignId('coupon_id')->nullable()->constrained()->onDelete('set null');
             $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending');
-            $table->timestamps(0);
+            $table->timestamps();
         });
     }
 
-    public function down()
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::dropIfExists('orders');
     }
