@@ -35,12 +35,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 // trang product
-Route::get('/product', function () {
-    return view('client.product');
-})->name('product');
+Route::get('/product', [ProductController::class, 'index'])->name('product');
 // trang add product
-
-Route::get('/addproduct', function () {
-    return view('admin.addproduct');
-})->name('addproduct');
-Route::post('addproduct', [ProductController::class, 'store'])->name('addproduct');
+Route::get('/addproduct', [ProductController::class, 'create'])->name('addproduct');
+Route::post('/addproduct', [ProductController::class, 'store'])->name('addproduct');

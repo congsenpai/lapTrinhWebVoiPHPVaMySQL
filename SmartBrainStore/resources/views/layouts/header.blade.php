@@ -489,22 +489,15 @@
                     </div>
                     <div class="col-lg-9 col-md-8 padding-top-2px">
                         <div class="header-search-bar layout-01">
-                            <form action="#" class="form-search" name="desktop-seacrh" method="get">
-                                <input type="text" name="s" class="input-text" value=""
+                            <form action="{{ route('product') }}" class="form-search" name="search" method="get"
+                                id="search">
+                                <input type="text" name="s" class="input-text" value="{{ request('s') }}"
                                     placeholder="Tìm sản phẩm ở đây nè :>">
-                                <select name="category">
-                                    <option value="-1" selected>Tất cả</option>
-                                    <option value="fresh_fruits">Trái cây tươi</option>
-                                    <option value="frozen_fruits">Trái cây đông lạnh</option>
-                                    <option value="dried_fruits">Trái cây sấy</option>
-                                    <option value="finished_fruits">Trái cây chế biến</option>
-                                    <option value="canned_fruits">Trái cây đóng hộp</option>
-                                    <option value="gift_fruits">Quà tặng</option>
-                                    <option value="imported_fruits">Trái cây nhập khẩu</option>
-                                </select>
+
                                 <button type="submit" class="btn-submit"><i
                                         class="biolife-icon icon-search"></i></button>
                             </form>
+
                         </div>
                         <div class="live-info">
                             <p class="telephone"><i class="fas fa-phone" aria-hidden="true"></i><b

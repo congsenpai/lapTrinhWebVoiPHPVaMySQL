@@ -1,100 +1,137 @@
-@extends('layouts.app')
+@extends('layouts.app') {{-- Kế thừa layout chính, nếu có --}}
 
 @section('content')
     <style>
         .file-preview-container {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            /* Grid responsive */
             gap: 10px;
-            margin-top: 15px;
-        }
-
-        .file-preview-item {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 10px;
-            min-width: 200px;
-            background: #f9f9f9;
-            position: relative;
-            flex: 1 1 auto;
+            /* Khoảng cách giữa các hình ảnh */
         }
 
         .file-preview-item img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            margin-right: 10px;
+            width: 100%;
+            /* Tự động điều chỉnh theo kích thước cột */
+            height: 100px;
+            /* Chiều cao cố định */
+            object-fit: cover;
+            /* Căn chỉnh hình ảnh trong khung */
+            border-radius: 5px;
+            /* Bo góc cho hình ảnh */
+            border: 1px solid #ddd;
+            /* Đường viền nhạt */
         }
 
-        .file-preview-item .file-info {
-            flex-grow: 1;
+        .file-preview-item {
+            position: relative;
+            text-align: center;
+            /* Canh giữa nội dung bên trong */
         }
 
-        .file-preview-item .file-info .file-name {
-            font-size: 14px;
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .file-preview-item .file-info .file-type {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .file-preview-item .remove-file {
+        .remove-file {
             position: absolute;
             top: 5px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            color: #e74c3c;
-            background: none;
+            right: 5px;
+            background: red;
+            color: white;
             border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .nice-select .current{
+            width: 100px;
+            color: black;
         }
     </style>
+
     <div class="container">
-        <h1>Thêm sản phẩm mới</h1>
+        <h1>Thêm Sản Phẩm Mới</h1>
+
+        {{-- Hiển thị thông báo lỗi nếu có --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        {{-- Form thêm sản phẩm --}}
         <form action="{{ route('addproduct') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="mb-3">
-                <label for="name" class="form-label">Tên sản phẩm</label>
-                <input type="text" name="name" id="name" class="form-control" required>
+            @csrf {{-- Bảo vệ form CSRF --}}
+
+            {{-- Tên sản phẩm --}}
+            <div class="form-group">
+                <label for="name">Tên sản phẩm:</label>
+                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
             </div>
 
-            <div class="mb-3">
-                <label for="description" class="form-label">Mô tả</label>
-                <textarea name="description" id="description" class="form-control"></textarea>
+            {{-- Mô tả sản phẩm --}}
+            <div class="form-group">
+                <label for="description">Mô tả:</label>
+                <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
             </div>
 
-            <div class="mb-3">
-                <label for="price" class="form-label">Giá</label>
-                <input type="number" name="price" id="price" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="price" class="form-label">Giá</label>
-                <input type="number" name="price" id="price" class="form-control" required>
+            {{-- Giá sản phẩm --}}
+            <div class="form-group">
+                <label for="price">Giá:</label>
+                <input type="number" name="price" id="price" class="form-control" value="{{ old('price') }}"
+                    min="0" step="0.01" required>
             </div>
 
-            <div class="mb-3">
-                <label for="stock" class="form-label">Số lượng</label>
-                <input type="number" name="stock" id="stock" class="form-control" required>
+            {{-- Số lượng tồn kho --}}
+            <div class="form-group">
+                <label for="stock">Số lượng tồn kho:</label>
+                <input type="number" name="stock" id="stock" class="form-control" value="{{ old('stock') }}"
+                    min="0" required>
             </div>
 
-            <div class="mb-3 ">
-                <label for="images" class="form-label">Hình ảnh</label>
+            {{-- Danh mục sản phẩm --}}
+            <div class="form-group">
+                <label for="category_id">Danh mục:</label>
+                <select name="category_id" id="category_id" class="form-control"  required>
+                    <option value="" selected>Chọn danh mục</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="brand_id">Thương hiệu:</label>
+                <select name="brand_id" id="brand_id" class="form-control"  required>
+                    <option value="" selected>Chọn thương hiệu</option>
+                    @foreach ($brands as $brand)
+                        <option value="{{ $brand->id }}" {{ old('category_id') == $brand->id ? 'selected' : '' }}>
+                            {{ $brand->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Hình ảnh sản phẩm --}}
+            <div class="form-group">
+                <label for="images">Hình ảnh:</label>
                 <div class="container">
                     <input type="file" id="fileInput" name="images[]" multiple>
                     <div id="filePreview" class="file-preview-container"></div>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+            {{-- Nút submit --}}
+            <button type="submit" class="btn btn-primary mt-3">Thêm sản phẩm</button>
         </form>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('fileInput').addEventListener('change', function(event) {
@@ -111,6 +148,9 @@
 
                     // Create thumbnail (default to PDF icon if file is not an image)
                     const thumbnail = document.createElement('img');
+                    thumbnail.style.width = '80px'; // Thumbnail width
+                    thumbnail.style.height = '80px'; // Thumbnail height
+                    thumbnail.style.objectFit = 'cover'; // Maintain aspect ratio
                     if (file.type.startsWith('image/')) {
                         thumbnail.src = URL.createObjectURL(file);
                     } else {
