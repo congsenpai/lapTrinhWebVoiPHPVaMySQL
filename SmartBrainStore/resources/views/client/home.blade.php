@@ -1,4 +1,4 @@
-@extends('layouts/app')
+@extends('client.layouts/app')
 @section('content')
-@include('layouts.banner')
+@include('client.layouts.banner')
 @endsection

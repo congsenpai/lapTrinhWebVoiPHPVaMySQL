@@ -1,4 +1,4 @@
-@extends('layouts.app') {{-- Kế thừa layout chính, nếu có --}}
+@extends('admin.layouts.app') {{-- Kế thừa layout chính, nếu có --}}
 
 @section('content')
     <style>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('client.layouts.app')
 @section('content')
     <div class="page-contain login-page">
         <div id="main-content" class="main-content">

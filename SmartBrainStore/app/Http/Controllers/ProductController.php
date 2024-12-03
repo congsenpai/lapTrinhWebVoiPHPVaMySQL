@@ -22,7 +22,7 @@ class ProductController extends Controller
         $brands = Brand::all();
 
         // Truyền dữ liệu qua view
-        return view('admin.addproduct', compact('categories', 'brands'));
+        return view('admin.product.addproduct', compact('categories', 'brands'));
     }
 
     // Lưu sản phẩm mới 
@@ -150,5 +150,11 @@ class ProductController extends Controller
 
         // Trả về view chính
         return view('client.product', compact('products', 'brands', 'categories'));
+    }
+    // chức năng dành cho admin 
+    // hiển thị form CRUD sản phẩm
+    public function showAdminProductForm()
+    {
+        return view('admin.product.product');
     }
 }

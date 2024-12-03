@@ -9,6 +9,6 @@ class DashboardController extends Controller
     public function index()
     {
         // Trả về view dashboard
-        return view('dashboard');
+        return view('admin.dashboard');
     }
 }
