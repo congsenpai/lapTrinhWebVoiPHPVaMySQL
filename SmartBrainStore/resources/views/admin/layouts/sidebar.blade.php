@@ -68,16 +68,16 @@ $menuItems = [
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header" style="border-top-left-radius: 8px; border-top-right-radius:8px">
-                <div class="dropdown profile-element" style="display: flex;align-items:flex-start;">
+                <div class="dropdown profile-element">
                     <span>
-                        <img alt="image" class="img-circle" style="padding-right:10px" src="{{ Vite::asset('resources/images/favicon.png') }}" />
+                        <img alt="image" class="img-circle" src="{{ Vite::asset('resources/images/favicon.png') }}" />
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
                             <span class="block m-t-xs">
                                 <strong class="font-bold">{{ Auth::user()->name }}</strong>
                             </span>
-                            <span class="text-muted text-xs block">{{ Auth::user()->role }}</span>
+                            <span class="text-muted text-xs block">{{ Auth::user()->role }}<b class="caret"></b></span>
                         </span>
                     </a>
                 </div>

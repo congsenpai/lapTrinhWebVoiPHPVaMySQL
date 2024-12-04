@@ -45,8 +45,7 @@ Route::get('/', function () {
 
 // trang product
 Route::get('/product', [ProductController::class, 'index'])->name('product');
-// product details
-Route::get('/product/{id}', [ProductController::class, 'showProductDetail'])->name('productdetail');
+
 
 
 // các route dành cho admin
@@ -65,7 +64,7 @@ Route::get('admin/brand', [BrandController::class, 'showAdminBrandForm'])->name(
 Route::get('admin/category', [CategoryController::class, 'showAdminCategoryForm'])->name('admincategory')->middleware('check.role:admin,staff');
 // trang sản phẩm
 // trang product
-Route::get('admin/product', [ProductController::class, 'getAllProduct'])->name('adminproduct')->middleware('check.role:admin,staff');
+Route::get('admin/product', [ProductController::class, 'showAdminProductForm'])->name('adminproduct')->middleware('check.role:admin,staff');
 Route::get('/addproduct', [ProductController::class, 'create'])->name('addproduct');
 Route::post('/addproduct', [ProductController::class, 'store'])->name('addproduct');
 // trang hóa đơn
