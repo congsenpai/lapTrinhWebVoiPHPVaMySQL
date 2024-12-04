@@ -250,4 +250,9 @@ class AuthController extends Controller
         // Chuyển hướng tới trang chủ (hoặc trang cụ thể cho admin và staff)
         return redirect()->route('dashboard')->with('success', 'Đăng nhập thành công.');
     }
+    // trang đổi mật khẩu admin staff
+    public function showAdminChangePassForm(Request $request)
+    {
+        return view('admin.auth.changepass');
+    }
 }

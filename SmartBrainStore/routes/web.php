@@ -3,6 +3,14 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\CategoryController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 // Các route dành cho client
@@ -41,13 +49,31 @@ Route::get('/product', [ProductController::class, 'index'])->name('product');
 
 
 // các route dành cho admin
+// Default
+Route::get('admin', [AuthController::class, 'showLoginAdminForm']);
 // auth
 Route::get('login/admin', [AuthController::class, 'showLoginAdminForm'])->name('loginAsAdmin');
 Route::post('login/admin', [AuthController::class, 'loginAsAdmin'])->name('loginAsAdmin');
 // dashboard
 Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('check.role:admin,staff');
+// trang nhân viên
+Route::get('admin/staff', [UserController::class, 'showAdminStaffForm'])->name('adminstaff')->middleware('check.role:admin,staff');
+// trang thương hiệu
+Route::get('admin/brand', [BrandController::class, 'showAdminBrandForm'])->name('adminbrand')->middleware('check.role:admin,staff');
+// trang loại sản phẩm
+Route::get('admin/category', [CategoryController::class, 'showAdminCategoryForm'])->name('admincategory')->middleware('check.role:admin,staff');
+// trang sản phẩm
 // trang product
-Route::get('admin/product', [ProductController::class, 'showAdminProductForm'])->name('adminproduct');
-// trang add product
+Route::get('admin/product', [ProductController::class, 'showAdminProductForm'])->name('adminproduct')->middleware('check.role:admin,staff');
 Route::get('/addproduct', [ProductController::class, 'create'])->name('addproduct');
 Route::post('/addproduct', [ProductController::class, 'store'])->name('addproduct');
+// trang hóa đơn
+Route::get('admin/order', [OrderController::class, 'showAdminOrderForm'])->name('adminorder')->middleware('check.role:admin,staff');
+// trang khách hàng
+Route::get('admin/customer', [CustomerController::class, 'showAdminCustomerForm'])->name('admincustomer')->middleware('check.role:admin,staff');
+// trang voucher
+Route::get('admin/voucher', [VoucherController::class, 'showAdminVoucherForm'])->name('adminvoucher')->middleware('check.role:admin,staff');
+// trang khuyến mãi
+Route::get('admin/promotion', [PromotionController::class, 'showAdminPromotionForm'])->name('adminpromotion')->middleware('check.role:admin,staff');
+// trang đổi mật khẩu
+Route::get('admin/changepassword', [AuthController::class, 'showAdminChangePassForm'])->name('adminchangepass')->middleware('check.role:admin,staff');
