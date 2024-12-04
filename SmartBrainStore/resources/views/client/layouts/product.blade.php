@@ -72,7 +72,7 @@
                                     <li class="product-item col-lg-4 col-md-4 col-sm-4 col-xs-6">
                                         <div class="contain-product layout-default">
                                             <div class="product-thumb">
-                                                <a href="{{ route('productdetail', $product->id) }}" class="link-to-product">
+                                                <a href="#" class="link-to-product">
                                                     @php
                                                         $primaryImage = $product->images
                                                             ->where('is_primary', true)
