@@ -8697,7 +8697,7 @@ td button i{
 }
 
 .align-items-center {
-  align-content: center
+  align-items: center
 }
 
 .image-large {
@@ -8831,4 +8831,31 @@ td button i{
 /* Hide the default focus outline */
 a:focus {
   outline: none;
+}
+/* preview file */
+.file-preview-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.file-selector {
+  width: 40px;
+  height: 40px;
+  background-color: #f0f0f0;
+  border: 1px dashed #ccc;
+  display: inline-block;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.clear-button{
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  top: 4px;
+}
+.clear-button:hover{
+  cursor: pointer;
 }

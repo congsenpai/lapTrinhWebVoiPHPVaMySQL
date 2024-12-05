@@ -83,7 +83,7 @@
                                     <img id="primaryImage" src="{{ Vite::asset('resources/images/default-product.jpg') }}"
                                         alt="Large Image" class="image-large">
                                 </div>
-                                
+
                                 <!-- Carousel -->
                                 <div id="imageCarousel" class="carousel slide" data-ride="carousel">
                                     <ol class="carousel-indicators"></ol>
@@ -98,7 +98,22 @@
                                     </a>
                                 </div>
                                 <!-- Upload hình ảnh -->
-                                <input type="file" id="uploadImages" class="form-control mt-3" multiple accept="image/*">
+                                <div id="container-uploadImages" class="d-flex justify-content-center" style="display: none">
+                                    <input type="file" id="fileInput" name="images[]" multiple style="display: none;"
+                                        accept="image/*">
+                                    <div id="filePreview" class="file-preview-container" style="display:none"></div>
+                                    <label for="fileInput" class="file-label">
+                                        <div class="file-selector"></div>
+                                        <div class="file-selector"></div>
+                                        <div class="file-selector"></div>
+                                        <div class="file-selector"></div>
+                                        <div class="file-selector"></div>
+                                        <button id="clearAll" class="clear-button">
+                                            <i class="fa-solid fa-circle-xmark" style="color: #ff0000;">
+                                            </i>
+                                        </button>
+                                    </label>
+                                </div>
                             </div>
                             <div class="col-md-8">
                                 <!-- Form hiển thị thông tin sản phẩm -->
@@ -161,13 +176,37 @@
 
             // Khi nhấn nút thêm
             $('.btn-add').on('click', function() {
+                // Đặt lại tiêu đề modal
                 $('#productModalLabel').text('Thêm sản phẩm');
-                resetModal();
+                $('#primaryImage').attr('src', '{{ Vite::asset("resources/images/default-product.jpg") }}');
+                // Xóa dữ liệu của form cũ
+                $('#itemCode').val('');
+                $('#itemName').val('');
+                $('#itemCategory').val('').trigger('change'); // Reset dropdown
+                $('#itemBrand').val('').trigger('change'); // Reset dropdown
+                $('#sellingPrice').val('');
+                $('#stockQuantity').val('');
+                $('#description').val('');
+
+                // Ẩn hình ảnh chính và carousel
+                $('#imageCarousel').hide(); // Ẩn carousel
+
+                // Hiển thị container-uploadImages
+                $('#container-uploadImages').show();
+
+                // Reset file input và file preview
+                $('#fileInput').val('');
+                $('#filePreview').empty();
+
+                // Hiển thị modal
                 productModal.modal('show');
             });
+
             // Khi nhấn nút xem
             $('.btn-view').on('click', function() {
                 const productId = $(this).data('product-id'); // Lấy ID sản phẩm từ dữ liệu nút
+                $('#imageCarousel').show(); // Ẩn carousel
+                $('#container-uploadImages').hide();
                 // Gọi API để lấy thông tin sản phẩm
                 fetch(`/api/product/${productId}`)
                     .then(response => {
@@ -204,19 +243,7 @@
                         console.error('Error fetching product:', err);
                         alert('Không thể lấy thông tin sản phẩm.');
                     });
-                resetModal();
             });
-
-            // Reset modal khi đóng hoặc trước khi mở modal
-            function resetModal() {
-                $('#itemCode, #itemName, #costPrice, #sellingPrice, #stockQuantity').val('');
-                $('#itemCategory, #itemBrand').val('');
-                primaryImage.src = "{{ Vite::asset('resources/images/default-product.jpg') }}";
-                imageCarouselIndicators.innerHTML = '';
-                imageCarouselInner.innerHTML = '';
-                uploadImages.value = '';
-                imageList = [];
-            }
 
             function updateImageGallery(images) {
                 const indicators = document.querySelector('#imageCarousel .carousel-indicators');
@@ -279,6 +306,61 @@
                 }
             }
         </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const fileInput = document.getElementById('fileInput');
+                const fileSelectors = document.querySelectorAll('.file-selector');
+                const clearAllButton = document.getElementById('clearAll');
+                const maxFiles = 5;
 
+                fileInput.addEventListener('change', function(event) {
+                    const files = Array.from(event.target.files);
+
+                    // Kiểm tra giới hạn số lượng file
+                    if (files.length > maxFiles) {
+                        alert(`Bạn chỉ có thể chọn tối đa ${maxFiles} hình ảnh.`);
+                        fileInput.value = ''; // Reset input
+                        return;
+                    }
+
+                    // Gán ảnh vào các thẻ selector
+                    fileSelectors.forEach((selector, index) => {
+                        if (files[index]) {
+                            selector.style.backgroundImage =
+                                `url(${URL.createObjectURL(files[index])})`;
+                        } else {
+                            selector.style.backgroundImage = ''; // Xóa ảnh nếu không có file
+                        }
+                    });
+
+                    // Cập nhật phần preview
+                    updatePreview(files);
+                });
+
+                // Hàm cập nhật preview
+                function updatePreview(files) {
+                    const filePreview = document.getElementById('filePreview');
+                    filePreview.innerHTML = ''; // Xóa nội dung trước đó
+
+                    files.forEach(() => {
+                        // Tạo phần tử hiển thị preview
+                        const previewItem = document.createElement('div');
+                        previewItem.classList.add('file-preview-item');
+
+                        // Không tạo thẻ <img>, chỉ để phần preview
+                        filePreview.appendChild(previewItem);
+                    });
+                }
+
+                // Xóa toàn bộ
+                clearAllButton.addEventListener('click', function() {
+                    fileInput.value = ''; // Reset file input
+                    fileSelectors.forEach((selector) => {
+                        selector.style.backgroundImage = ''; // Xóa ảnh trên selector
+                    });
+                    updatePreview([]); // Xóa toàn bộ preview
+                });
+            });
+        </script>
     </section>
 @endsection
