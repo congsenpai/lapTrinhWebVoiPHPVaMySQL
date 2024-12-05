@@ -1,10 +1,9 @@
 @extends('admin.layouts.app')
 @section('content')
     <section class="p-3" style="padding-right: 30px">
-
         <div class="row" style="margin-bottom: 10px">
             <div class="col-12" style="display:flex;justify-content:flex-end">
-                <button class="btn btn-primary newUser" data-bs-toggle="modal" data-bs-target="#productForm">Thêm sản
+                <button class="btn btn-primary btn-add newUser" data-toggle="modal" data-target="#productModal">Thêm sản
                     phẩm</button>
             </div>
         </div>
@@ -32,6 +31,14 @@
                                     $imageUrl = $primaryImage
                                         ? asset('storage/' . $primaryImage->image_url)
                                         : asset('resources/images/default-product.jpg');
+
+                                    // Lấy danh sách ảnh không phải ảnh chính
+                                    $nonPrimaryImages = $product->images->where('is_primary', false);
+
+                                    // Chuyển đổi danh sách ảnh thành URL
+                                    $nonPrimaryImageUrls = $nonPrimaryImages->map(function ($image) {
+                                        return asset('storage/' . $image->image_url);
+                                    });
                                 @endphp
                                 <td> <img src="{{ $imageUrl }}" alt="{{ $product->name }}" width="50" height="50"
                                         style="object-fit: contain" class="product-thumbnail">
@@ -41,7 +48,7 @@
                                 <td> <a href="#">{{ $product->stock }}</a></td>
                                 <td>
                                     <!-- View Product Modal Trigger -->
-                                    <button class="btn btn-info btn-sm" id="btnShowModal"
+                                    <button class="btn btn-info btn-sm btn-view" id="btnShowModal"
                                         data-product-id="{{ $product->id }}" data-product-name="{{ $product->name }}"
                                         data-product-price="{{ $product->price }}"
                                         data-product-stock="{{ $product->stock }}"
@@ -60,5 +67,218 @@
             </div>
         </div>
         <!--Modal Form-->
+
+
+        <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="productModalLabel"></h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <!-- Hình ảnh chính -->
+                                <div class="mb-3 d-flex row justify-content-center align-items-center">
+                                    <img id="primaryImage" src="{{ Vite::asset('resources/images/default-product.jpg') }}"
+                                        alt="Large Image" class="image-large">
+                                </div>
+                                
+                                <!-- Carousel -->
+                                <div id="imageCarousel" class="carousel slide" data-ride="carousel">
+                                    <ol class="carousel-indicators"></ol>
+                                    <div class="carousel-inner"></div>
+                                    <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+                                <!-- Upload hình ảnh -->
+                                <input type="file" id="uploadImages" class="form-control mt-3" multiple accept="image/*">
+                            </div>
+                            <div class="col-md-8">
+                                <!-- Form hiển thị thông tin sản phẩm -->
+                                <form>
+                                    <div class="form-group d-flex align-items-center">
+                                        <label for="itemCode" class="form-label mr-2">Mã hàng:</label>
+                                        <input type="text" class="form-control" id="itemCode" readonly>
+                                    </div>
+                                    <div class="form-group d-flex align-items-center">
+                                        <label for="itemName" class="form-label mr-2">Tên hàng:</label>
+                                        <input type="text" class="form-control" id="itemName">
+                                    </div>
+                                    <div class="form-group d-flex align-items-center">
+                                        <label for="itemCategory" class="form-label mr-2">Nhóm hàng:</label>
+                                        <select class="form-control" id="itemCategory">
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group d-flex align-items-center">
+                                        <label for="itemBrand" class="form-label mr-2">Thương hiệu:</label>
+                                        <select class="form-control" id="itemBrand">
+                                            @foreach ($brands as $brand)
+                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group d-flex align-items-center">
+                                        <label for="sellingPrice" class="form-label mr-2">Giá bán:</label>
+                                        <input type="number" class="form-control" id="sellingPrice">
+                                    </div>
+                                    <div class="form-group d-flex align-items-center">
+                                        <label for="stockQuantity" class="form-label mr-2">Tồn kho:</label>
+                                        <input type="number" class="form-control" id="stockQuantity">
+                                    </div>
+                                    <div class="form-group d-flex align-items-center">
+                                        <label for="description" class="form-label mr-2">Mô tả</label>
+                                        <textarea class="form-control" id="description" rows="1"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="saveProduct" class="btn btn-success">Lưu</button>
+                        <button class="btn btn-secondary" data-dismiss="modal">Bỏ qua</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const productModal = $('#productModal');
+            const primaryImage = document.getElementById('primaryImage');
+            const imageCarouselIndicators = document.querySelector('#imageCarousel .carousel-indicators');
+            const imageCarouselInner = document.querySelector('#imageCarousel .carousel-inner');
+            const uploadImages = document.getElementById('uploadImages');
+            let imageList = []; // Danh sách hình ảnh đã upload
+
+            // Khi nhấn nút thêm
+            $('.btn-add').on('click', function() {
+                $('#productModalLabel').text('Thêm sản phẩm');
+                resetModal();
+                productModal.modal('show');
+            });
+            // Khi nhấn nút xem
+            $('.btn-view').on('click', function() {
+                const productId = $(this).data('product-id'); // Lấy ID sản phẩm từ dữ liệu nút
+                // Gọi API để lấy thông tin sản phẩm
+                fetch(`/api/product/${productId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json(); // Chuyển phản hồi thành JSON
+                    })
+                    .then(product => {
+                        // Hiển thị thông tin sản phẩm trong modal
+                        $('#productModalLabel').text('Thông tin sản phẩm'); // Cập nhật tiêu đề modal
+                        $('#itemCode').val(product.id); // Cập nhật mã sản phẩm
+                        $('#itemName').val(product.name); // Cập nhật tên sản phẩm
+
+                        // Kiểm tra và cập nhật category_id
+                        $('#itemCategory').val(product.category ? product.category.name :
+                            ''); // Nếu không có category_id, để trống
+
+                        // Kiểm tra và cập nhật brand_id
+                        $('#itemBrand').val(product.brand ? product.brand.name :
+                            ''); // Nếu không có brand_id, để trống
+                        $('#description').val(product.description); // Cập nhật mô tả (hoặc giá vốn nếu bạn muốn)
+                        $('#sellingPrice').val(product.price); // Cập nhật giá bán
+                        $('#stockQuantity').val(product.stock); // Cập nhật tồn kho
+                        // Cập nhật hình ảnh chính và gallery carousel
+                        updateImageGallery(product.images); // Cập nhật hình ảnh sản phẩm trong carousel
+                        // Hiển thị modal
+                        $('#productModal').modal('show');
+                    })
+                    .then(data => {
+                        console.log(data); // Logs the product data to the console
+                    })
+                    .catch(err => {
+                        console.error('Error fetching product:', err);
+                        alert('Không thể lấy thông tin sản phẩm.');
+                    });
+                resetModal();
+            });
+
+            // Reset modal khi đóng hoặc trước khi mở modal
+            function resetModal() {
+                $('#itemCode, #itemName, #costPrice, #sellingPrice, #stockQuantity').val('');
+                $('#itemCategory, #itemBrand').val('');
+                primaryImage.src = "{{ Vite::asset('resources/images/default-product.jpg') }}";
+                imageCarouselIndicators.innerHTML = '';
+                imageCarouselInner.innerHTML = '';
+                uploadImages.value = '';
+                imageList = [];
+            }
+
+            function updateImageGallery(images) {
+                const indicators = document.querySelector('#imageCarousel .carousel-indicators');
+                const inner = document.querySelector('#imageCarousel .carousel-inner');
+                const primaryImageElement = document.getElementById('primaryImage');
+                const baseUrl = window.location.origin;
+
+                const totalSlides = images.length; // Total number of slides needed
+
+                if (totalSlides === 0) {
+                    console.log("No images to display.");
+                    return; // Nếu không có ảnh, dừng hàm
+                }
+
+                let primaryImageFound = false; // Biến kiểm tra xem ảnh chính đã được tìm thấy chưa
+
+                // Tìm và gán ảnh chính vào phần tử primaryImage
+                const primaryImage = images.find(image => image.is_primary === 1);
+                if (primaryImage) {
+                    primaryImageElement.src = `${baseUrl}/storage/${primaryImage.image_url}`;
+                    primaryImageFound = true; // Đánh dấu là ảnh chính đã được tìm thấy và gán
+                }
+
+                // Tiến hành tạo carousel cho các ảnh còn lại
+                for (let index = 0; index < totalSlides; index++) {
+                    // Nếu ảnh này là ảnh chính, bỏ qua nó trong carousel
+                    if (images[index].is_primary === 1) {
+                        continue;
+                    }
+
+                    // Add indicators
+                    const indicator = document.createElement('li');
+                    indicator.setAttribute('data-target', '#imageCarousel');
+                    indicator.setAttribute('data-slide-to', index);
+                    if (index === 0) indicator.classList.add('active');
+                    indicators.appendChild(indicator);
+
+                    // Add carousel items
+                    const item = document.createElement('div');
+                    item.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+                    const group = document.createElement('div');
+                    group.className = 'd-flex justify-content-center';
+
+                    // Add exactly 3 images per slide (wrapping around if needed)
+                    for (let i = 0; i < 3; i++) {
+                        const imgIndex = (index + i) % images.length; // Wrap around using modulo
+                        const img = document.createElement('img');
+
+                        // Extract the image URL from the current image object
+                        const imageUrl = images[imgIndex].image_url;
+                        // Construct the full image URL
+                        img.src = `${baseUrl}/storage/${imageUrl}`;
+
+                        img.className = 'image-small mx-2';
+                        group.appendChild(img);
+                    }
+
+                    item.appendChild(group);
+                    inner.appendChild(item);
+                }
+            }
+        </script>
+
     </section>
 @endsection

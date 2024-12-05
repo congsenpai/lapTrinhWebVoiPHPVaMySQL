@@ -1,6 +1,6 @@
 @extends('client.layouts.app')
 @section('content')
-<div class="page-contain single-product">
+<div class="page-contain single-product" style="padding-top: 40px">
     <div class="container">
         <!-- Main content -->
         <div id="main-content" class="main-content">

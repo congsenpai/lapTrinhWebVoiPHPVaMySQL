@@ -47,6 +47,8 @@ Route::get('/', function () {
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 // product details
 Route::get('/product/{id}', [ProductController::class, 'showProductDetail'])->name('productdetail');
+Route::get('/api/product/{id}', [ProductController::class, 'showProductDetailJson']);
+
 
 
 // các route dành cho admin

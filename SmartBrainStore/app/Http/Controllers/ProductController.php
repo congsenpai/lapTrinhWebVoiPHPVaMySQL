@@ -154,12 +154,21 @@ class ProductController extends Controller
     // Trang chi tiết sản phẩm
     public function showProductDetail($id)
     {
-        // Tìm sản phẩm theo ID
-        $product = Product::findOrFail($id);
+        // Tìm sản phẩm theo ID và lấy thông tin brand, category và images
+        $product = Product::with(['brand', 'category', 'images'])->findOrFail($id);
 
-        // Trả về view chi tiết sản phẩm và truyền dữ liệu sản phẩm vào
-        return view('client.layouts.singleproduct', compact('product'));
+        // Trả về dữ liệu JSON với thông tin sản phẩm, thương hiệu, danh mục và hình ảnh
+        return view('client.layouts.singleproduct', ['product' => $product]);
     }
+    public function showProductDetailJson($id)
+    {
+        // Tìm sản phẩm theo ID và lấy thông tin brand, category và images
+        $product = Product::with(['brand', 'category', 'images'])->findOrFail($id);
+
+        // Trả về dữ liệu JSON với thông tin sản phẩm, thương hiệu, danh mục và hình ảnh
+        return response()->json($product);
+    }
+
     // chức năng dành cho admin 
 
     // hiển thị form CRUD sản phẩm
