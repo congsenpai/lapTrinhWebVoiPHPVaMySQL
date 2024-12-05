@@ -28,6 +28,16 @@ class ProductController extends Controller
     // Lưu sản phẩm mới 
     public function store(Request $request)
     {
+        // Các trường bắt buộc
+        $requiredFields = ['name', 'price', 'stock', 'category_id', 'brand_id'];
+
+        // Kiểm tra xem có trường nào bị thiếu không
+        foreach ($requiredFields as $field) {
+            if (!$request->has($field)) {
+                // Trả về thông báo lỗi nếu thiếu trường nào đó
+                return back()->withErrors([$field => 'Trường ' . $field . ' không được phép bỏ trống.'])->withInput();
+            }
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -59,7 +69,7 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()->route('product')->with('success', 'Sản phẩm đã được tạo!');
+        return redirect()->route('adminproduct')->with('success', 'Sản phẩm đã được tạo!');
     }
     // Hiển thị danh sách sản phẩm
     public function index(Request $request)

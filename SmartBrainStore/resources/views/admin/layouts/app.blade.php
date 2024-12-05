@@ -27,7 +27,23 @@
 </head>
 
 <body>
-
+    <script>
+        @if (session('success'))
+            toastr.success("{{ session('success') }}", '', {
+                timeOut: 2000,
+                positionClass: 'toast-bottom-right'
+            });
+        @endif
+    
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}", '', {
+                    timeOut: 2000,
+                    positionClass: 'toast-bottom-right'
+                });
+            @endforeach
+        @endif
+    </script>
     <div class="container" style="width: 100%;margin: 0;padding: 0;">
         <div class="row">
             <div class="col-md-3" >@include('admin.layouts.sidebar')</div>

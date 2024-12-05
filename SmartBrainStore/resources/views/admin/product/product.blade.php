@@ -71,7 +71,8 @@
 
         <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+                <form action="" method="POST" enctype="multipart/form-data" class="modal-content" id="productForm">
+                    @csrf {{-- Bảo vệ form CSRF --}}
                     <div class="modal-header">
                         <h3 class="modal-title" id="productModalLabel"></h3>
                     </div>
@@ -98,7 +99,8 @@
                                     </a>
                                 </div>
                                 <!-- Upload hình ảnh -->
-                                <div id="container-uploadImages" class="d-flex justify-content-center" style="display: none">
+                                <div id="container-uploadImages" class="d-flex justify-content-center form-group"
+                                    style="display: none">
                                     <input type="file" id="fileInput" name="images[]" multiple style="display: none;"
                                         accept="image/*">
                                     <div id="filePreview" class="file-preview-container" style="display:none"></div>
@@ -117,52 +119,52 @@
                             </div>
                             <div class="col-md-8">
                                 <!-- Form hiển thị thông tin sản phẩm -->
-                                <form>
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="itemCode" class="form-label mr-2">Mã hàng:</label>
-                                        <input type="text" class="form-control" id="itemCode" readonly>
-                                    </div>
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="itemName" class="form-label mr-2">Tên hàng:</label>
-                                        <input type="text" class="form-control" id="itemName">
-                                    </div>
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="itemCategory" class="form-label mr-2">Nhóm hàng:</label>
-                                        <select class="form-control" id="itemCategory">
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="itemBrand" class="form-label mr-2">Thương hiệu:</label>
-                                        <select class="form-control" id="itemBrand">
-                                            @foreach ($brands as $brand)
-                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="sellingPrice" class="form-label mr-2">Giá bán:</label>
-                                        <input type="number" class="form-control" id="sellingPrice">
-                                    </div>
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="stockQuantity" class="form-label mr-2">Tồn kho:</label>
-                                        <input type="number" class="form-control" id="stockQuantity">
-                                    </div>
-                                    <div class="form-group d-flex align-items-center">
-                                        <label for="description" class="form-label mr-2">Mô tả</label>
-                                        <textarea class="form-control" id="description" rows="1"></textarea>
-                                    </div>
-                                </form>
+                                <div class="form-group d-flex align-items-center">
+                                    <label for="itemCode" class="form-label mr-2">Mã hàng:</label>
+                                    <input type="text" class="form-control" id="itemCode" readonly>
+                                </div>
+                                <div class="form-group d-flex align-items-center">
+                                    <label for="itemName" class="form-label mr-2">Tên hàng:</label>
+                                    <input type="text" class="form-control" id="itemName" name="name">
+                                </div>
+                                <div class="form-group d-flex align-items-center">
+                                    <label for="itemCategory" class="form-label mr-2">Nhóm hàng:</label>
+                                    <select class="form-control" id="itemCategory" name="category_id">
+                                        <option value="" disabled selected>Chọn nhóm hàng</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group d-flex align-items-center">
+                                    <label for="itemBrand" class="form-label mr-2">Thương hiệu:</label>
+                                    <select class="form-control" id="itemBrand" name="brand_id">
+                                        <option value="" disabled selected>Chọn thương hiệu</option>
+                                        @foreach ($brands as $brand)
+                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group d-flex align-items-center">
+                                    <label for="sellingPrice" class="form-label mr-2">Giá bán:</label>
+                                    <input type="number" class="form-control" id="sellingPrice" name="price">
+                                </div>
+                                <div class="form-group d-flex align-items-center">
+                                    <label for="stockQuantity" class="form-label mr-2">Tồn kho:</label>
+                                    <input type="number" class="form-control" id="stockQuantity" name="stock">
+                                </div>
+                                <div class="form-group d-flex align-items-center">
+                                    <label for="description" class="form-label mr-2">Mô tả</label>
+                                    <textarea class="form-control" id="description" rows="1" name="description"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="saveProduct" class="btn btn-success">Lưu</button>
+                        <button type="submit" id="saveProduct" class="btn btn-success">Lưu</button>
                         <button class="btn btn-secondary" data-dismiss="modal">Bỏ qua</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -172,13 +174,15 @@
             const imageCarouselIndicators = document.querySelector('#imageCarousel .carousel-indicators');
             const imageCarouselInner = document.querySelector('#imageCarousel .carousel-inner');
             const uploadImages = document.getElementById('uploadImages');
+            const productForm = document.getElementById('productForm')
             let imageList = []; // Danh sách hình ảnh đã upload
 
             // Khi nhấn nút thêm
             $('.btn-add').on('click', function() {
                 // Đặt lại tiêu đề modal
                 $('#productModalLabel').text('Thêm sản phẩm');
-                $('#primaryImage').attr('src', '{{ Vite::asset("resources/images/default-product.jpg") }}');
+                productForm.action = '{{ route('createproduct') }}'
+                $('#primaryImage').attr('src', '{{ Vite::asset('resources/images/default-product.jpg') }}');
                 // Xóa dữ liệu của form cũ
                 $('#itemCode').val('');
                 $('#itemName').val('');
@@ -204,7 +208,9 @@
 
             // Khi nhấn nút xem
             $('.btn-view').on('click', function() {
-                const productId = $(this).data('product-id'); // Lấy ID sản phẩm từ dữ liệu nút
+                const productId = $(this).data('product-id');
+                productForm.action = 'updateproduct'
+                // Lấy ID sản phẩm từ dữ liệu nút
                 $('#imageCarousel').show(); // Ẩn carousel
                 $('#container-uploadImages').hide();
                 // Gọi API để lấy thông tin sản phẩm
@@ -220,11 +226,9 @@
                         $('#productModalLabel').text('Thông tin sản phẩm'); // Cập nhật tiêu đề modal
                         $('#itemCode').val(product.id); // Cập nhật mã sản phẩm
                         $('#itemName').val(product.name); // Cập nhật tên sản phẩm
-
                         // Kiểm tra và cập nhật category_id
                         $('#itemCategory').val(product.category ? product.category.name :
                             ''); // Nếu không có category_id, để trống
-
                         // Kiểm tra và cập nhật brand_id
                         $('#itemBrand').val(product.brand ? product.brand.name :
                             ''); // Nếu không có brand_id, để trống
@@ -307,10 +311,35 @@
             }
         </script>
         <script>
+            document.getElementById('fileInput').addEventListener('change', function(event) {
+                const files = event.target.files; // Lấy các file người dùng chọn
+                const maxSize = 5 * 1024 * 1024; // Giới hạn dung lượng là 5MB (5 * 1024 * 1024 bytes)
+                let valid = true;
+
+                // Duyệt qua từng file
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    if (file.size > maxSize) {
+                        valid = false;
+                        break; // Nếu một file vượt quá dung lượng, dừng kiểm tra
+                    }
+                }
+
+                // Hiển thị thông báo lỗi nếu dung lượng ảnh vượt quá giới hạn
+                if (!valid) {
+                    document.getElementById('errorMessage').style.display = 'block'; // Hiển thị lỗi
+                    // Xóa lựa chọn file
+                    document.getElementById('fileInput').value = '';
+                } else {
+                    document.getElementById('errorMessage').style.display = 'none'; // Ẩn thông báo lỗi
+                }
+            });
+
             document.addEventListener('DOMContentLoaded', function() {
                 const fileInput = document.getElementById('fileInput');
                 const fileSelectors = document.querySelectorAll('.file-selector');
                 const clearAllButton = document.getElementById('clearAll');
+
                 const maxFiles = 5;
 
                 fileInput.addEventListener('change', function(event) {
