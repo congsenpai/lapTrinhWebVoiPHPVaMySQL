@@ -1,15 +1,6 @@
 <nav class="navbar navbar-static-top white-bg " style="display: flex;justify-content: space-between; align-items: center;"
     role="navigation" style="margin-bottom: 0; padding-left: 20px;">
     <div class="col-md-3" style="display: flex; align-items: center; justify-content: flex-end;">
-        <i class="fa-solid fa-magnifying-glass" style="font-size: large;padding: 8px;"></i>
-        <div class="navbar-header">
-            <form class="navbar-form-custom" action="#" method="post">
-                <div class="form-group" style="height: 100%;">
-                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search"
-                        id="top-search" style="padding: 0; height: 100%;">
-                </div>
-            </form>
-        </div>
     </div>
     <div class="col-md-9">
         <ul class="nav navbar-top-links navbar-right">
@@ -125,7 +116,7 @@
                     </form>
                 @endguest
             </li>
-            
+
         </ul>
     </div>
 

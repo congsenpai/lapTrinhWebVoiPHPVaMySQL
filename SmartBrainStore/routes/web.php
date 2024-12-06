@@ -53,8 +53,10 @@ Route::get('/api/product/{id}', [ProductController::class, 'showProductDetailJso
 
 
 // các route dành cho admin
+
 // Default
 Route::get('admin', [AuthController::class, 'showLoginAdminForm']);
+
 // auth
 Route::get('login/admin', [AuthController::class, 'showLoginAdminForm'])->name('loginAsAdmin');
 Route::post('login/admin', [AuthController::class, 'loginAsAdmin'])->name('loginAsAdmin');
