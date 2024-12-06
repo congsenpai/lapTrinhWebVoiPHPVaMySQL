@@ -13,64 +13,7 @@ use Illuminate\Pagination\Paginator;
 
 class ProductController extends Controller
 {
-    // Hiển thị form thêm sản phẩm và truyền biến categories và brands sang form
-    public function create()
-    {
-        // Lấy tất cả danh mục
-        $categories = Category::all();
-        // Lấy tất cả thương hiệu
-        $brands = Brand::all();
 
-        // Truyền dữ liệu qua view
-        return view('admin.product.addproduct', compact('categories', 'brands'));
-    }
-
-    // Lưu sản phẩm mới 
-    public function store(Request $request)
-    {
-        // Các trường bắt buộc
-        $requiredFields = ['name', 'price', 'stock', 'category_id', 'brand_id'];
-
-        // Kiểm tra xem có trường nào bị thiếu không
-        foreach ($requiredFields as $field) {
-            if (!$request->has($field)) {
-                // Trả về thông báo lỗi nếu thiếu trường nào đó
-                return back()->withErrors([$field => 'Trường ' . $field . ' không được phép bỏ trống.'])->withInput();
-            }
-        }
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'category_id' => 'required|exists:categories,id', // Kiểm tra category_id có tồn tại trong bảng categories
-            'brand_id' => 'required|exists:brands,id', // Kiểm tra brand_id có tồn tại trong bảng categories
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
-        ]);
-
-        // Lưu thông tin sản phẩm
-        $product = Product::create($request->only(['name', 'description', 'price', 'stock', 'category_id', 'brand_id'])); // Thêm 'category_id' vào mảng
-
-        // Lưu hình ảnh nếu có
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $key => $imageFile) {
-                // Tạo tên file mới để tránh trùng lặp
-                $newFileName = uniqid() . '_' . time() . '.' . $imageFile->getClientOriginalExtension();
-
-                // Lưu file vào thư mục 'products' trong 'storage/app/public'
-                $path = $imageFile->storeAs('products', $newFileName, 'public');
-
-                // Lưu thông tin hình ảnh vào bảng 'images'
-                Image::create([
-                    'product_id' => $product->id,
-                    'image_url' => $path,
-                    'is_primary' => $key === 0, // Ảnh đầu tiên là ảnh chính
-                ]);
-            }
-        }
-
-        return redirect()->route('adminproduct')->with('success', 'Sản phẩm đã được tạo!');
-    }
     // Hiển thị danh sách sản phẩm
     public function index(Request $request)
     {
@@ -78,8 +21,7 @@ class ProductController extends Controller
         // Lấy danh mục từ database
         $categories = Category::all();
         // Xây dựng query sản phẩm
-        $query = Product::query();
-
+        $query = Product::where('status', 'active'); // Chỉ lấy sản phẩm active
         // Tìm kiếm theo tên sản phẩm
         if ($request->has('s') && $request->s !== '') {
             $query->where('name', 'like', '%' . $request->s . '%');
@@ -88,13 +30,10 @@ class ProductController extends Controller
         if ($request->has('category') && $request->brand != 'all') {
             $query->where('category_id', $request->category);
         }
-
-
         // Lọc theo thương hiệu
         if ($request->has('brand') && $request->brand != 'all') {
             $query->where('brand_id', $request->brand);
         }
-
         // Lọc theo giá
         if ($request->has('price')) {
             switch ($request->price) {
@@ -191,8 +130,7 @@ class ProductController extends Controller
         // Lấy danh mục từ database
         $categories = Category::all();
         // Xây dựng query sản phẩm
-        $query = Product::query();
-
+        $query = Product::where('status', 'active'); // Chỉ lấy sản phẩm còn sống
         // Tìm kiếm theo tên sản phẩm
         if ($request->has('s') && $request->s !== '') {
             $query->where('name', 'like', '%' . $request->s . '%');
@@ -206,7 +144,7 @@ class ProductController extends Controller
             $query->where('brand_id', $request->brand);
         }
         // Phân trang
-        $products = $query->paginate(9); // 9 sản phẩm mỗi trang
+        $products = $query->paginate(8); // 8 sản phẩm mỗi trang
 
         // Kiểm tra nếu là AJAX request
         if ($request->ajax()) {
@@ -223,4 +161,138 @@ class ProductController extends Controller
         // Trả về view chính
         return view('admin.product.product', compact('products', 'brands', 'categories'));
     }
+    // Lưu sản phẩm mới
+    public function store(Request $request)
+    {
+        // Các trường bắt buộc
+        $requiredFields = ['name', 'price', 'stock', 'category_id', 'brand_id'];
+
+        // Kiểm tra xem có trường nào bị thiếu không
+        foreach ($requiredFields as $field) {
+            if (!$request->has($field)) {
+                // Trả về thông báo lỗi nếu thiếu trường nào đó
+                return back()->withErrors([$field => 'Trường ' . $field . ' không được phép bỏ trống.'])->withInput();
+            }
+        }
+        // Kiểm tra xem tên sản phẩm đã tồn tại với status là 'active' hay chưa
+        $existingProduct = Product::whereRaw('LOWER(name) = ?', [strtolower($request->name)])
+            ->where('status', 'active') // Kiểm tra trạng thái là active
+            ->first();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id', // Kiểm tra category_id có tồn tại trong bảng categories
+            'brand_id' => 'required|exists:brands,id', // Kiểm tra brand_id có tồn tại trong bảng categories
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+        ]);
+
+        // Lưu thông tin sản phẩm
+        $product = Product::create($request->only(['name', 'description', 'price', 'stock', 'category_id', 'brand_id'])); // Thêm 'category_id' vào mảng
+
+        // Lưu hình ảnh nếu có
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $key => $imageFile) {
+                // Tạo tên file mới để tránh trùng lặp
+                $newFileName = uniqid() . '_' . time() . '.' . $imageFile->getClientOriginalExtension();
+
+                // Lưu file vào thư mục 'products' trong 'storage/app/public'
+                $path = $imageFile->storeAs('products', $newFileName, 'public');
+
+                // Lưu thông tin hình ảnh vào bảng 'images'
+                Image::create([
+                    'product_id' => $product->id,
+                    'image_url' => $path,
+                    'is_primary' => $key === 0, // Ảnh đầu tiên là ảnh chính
+                ]);
+            }
+        }
+        return redirect()->route('adminproduct')->with('success', 'Sản phẩm đã được tạo!');
+    }
+    // Cập nhật thông tin sản phẩm
+    public function update(Request $request, $id)
+    {
+        // Lấy sản phẩm cần cập nhật
+        $product = Product::find($id);
+        if (!$product) {
+            return back()->withErrors(['error' => 'Sản phẩm không tồn tại.'])->withInput();
+        }
+
+        // Các trường bắt buộc
+        $requiredFields = ['name', 'price', 'stock', 'category_id', 'brand_id'];
+
+        // Kiểm tra xem có trường nào bị thiếu không
+        foreach ($requiredFields as $field) {
+            if (!$request->has($field)) {
+                return back()->withErrors([$field => 'Trường ' . $field . ' không được phép bỏ trống.'])->withInput();
+            }
+        }
+
+        // Kiểm tra xem tên sản phẩm đã tồn tại chưa (trừ sản phẩm hiện tại)
+        $existingProduct = Product::whereRaw('LOWER(name) = ?', [strtolower($request->name)])
+            ->where('id', '!=', $id)
+            ->first();
+
+        if ($existingProduct) {
+            return back()->withErrors(['name' => 'Tên sản phẩm này đã tồn tại trong cơ sở dữ liệu.'])->withInput();
+        }
+
+        // Xác thực dữ liệu
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id', // Kiểm tra category_id có tồn tại trong bảng categories
+            'brand_id' => 'required|exists:brands,id', // Kiểm tra brand_id có tồn tại trong bảng categories
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+        ]);
+
+        // Cập nhật thông tin sản phẩm
+        $product->update($request->only(['name', 'description', 'price', 'stock', 'category_id', 'brand_id']));
+
+        // Cập nhật hình ảnh nếu có
+        if ($request->hasFile('images')) {
+            // Xóa ảnh cũ
+            $product->images()->delete();
+
+            foreach ($request->file('images') as $key => $imageFile) {
+                // Tạo tên file mới để tránh trùng lặp
+                $newFileName = uniqid() . '_' . time() . '.' . $imageFile->getClientOriginalExtension();
+
+                // Lưu file vào thư mục 'products' trong 'storage/app/public'
+                $path = $imageFile->storeAs('products', $newFileName, 'public');
+
+                // Lưu thông tin hình ảnh vào bảng 'images'
+                Image::create([
+                    'product_id' => $product->id,
+                    'image_url' => $path,
+                    'is_primary' => $key === 0, // Ảnh đầu tiên là ảnh chính
+                ]);
+            }
+        }
+
+        return redirect()->route('adminproduct')->with('success', 'Sản phẩm đã được cập nhật!');
+    }
+    // Xóa sản phẩm bằng cách chuyển trạng thái sản phẩm thành deleted
+    // Phương thức xóa sản phẩm (chuyển trạng thái từ active sang deleted)
+    public function deleteProduct($id)
+    {
+        // Lấy sản phẩm theo ID
+        $product = Product::find($id);
+    
+        // Kiểm tra nếu sản phẩm không tồn tại
+        if (!$product) {
+            return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại.']);
+        }
+    
+        // Cập nhật trạng thái sản phẩm thành 'deleted'
+        $product->status = 'deleted';
+        $product->save();
+    
+        // Trả về phản hồi JSON
+        return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa thành công.']);
+    }
+    
 }

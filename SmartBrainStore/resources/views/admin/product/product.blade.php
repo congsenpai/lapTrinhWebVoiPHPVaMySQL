@@ -54,7 +54,8 @@
                                         data-product-stock="{{ $product->stock }}"
                                         data-product-primary-image="{{ $imageUrl }}"
                                         data-product-images="{{ json_encode($product->images->pluck('image_url')) }}">Xem</button>
-                                    <button class="btn btn-danger btn-sm" id="">Xóa</button>
+                                    <button class="btn btn-danger btn-sm btn-delete"
+                                        data-product-id="{{ $product->id }}">Xóa</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -130,7 +131,7 @@
                                 <div class="form-group d-flex align-items-center">
                                     <label for="itemCategory" class="form-label mr-2">Nhóm hàng:</label>
                                     <select class="form-control" id="itemCategory" name="category_id">
-                                        <option value="" disabled selected>Chọn nhóm hàng</option>
+                                        <option value="" selected id="itemCategoryLabel">Chọn nhóm hàng</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
@@ -139,7 +140,7 @@
                                 <div class="form-group d-flex align-items-center">
                                     <label for="itemBrand" class="form-label mr-2">Thương hiệu:</label>
                                     <select class="form-control" id="itemBrand" name="brand_id">
-                                        <option value="" disabled selected>Chọn thương hiệu</option>
+                                        <option value="" selected id="itemBrandLabel">Chọn thương hiệu</option>
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                         @endforeach
@@ -176,164 +177,237 @@
             const uploadImages = document.getElementById('uploadImages');
             const productForm = document.getElementById('productForm')
             let imageList = []; // Danh sách hình ảnh đã upload
+            $(document).ready(function() {
+                // Khi nhấn nút "Thêm sản phẩm"
+                $('.btn-add').on('click', function() {
+                    // Đặt lại tiêu đề modal và cấu hình form cho "Thêm sản phẩm"
+                    $('#productModalLabel').text('Thêm sản phẩm');
+                    // Thay đổi nút thành "Tạo sản phẩm"
+                    $('#saveProduct').text('Tạo sản phẩm');
+                    productForm.action = '{{ route('createproduct') }}';
+                    $('#primaryImage').attr('src',
+                        '{{ Vite::asset('resources/images/default-product.jpg') }}');
+                    resetModal();
 
-            // Khi nhấn nút thêm
-            $('.btn-add').on('click', function() {
-                // Đặt lại tiêu đề modal
-                $('#productModalLabel').text('Thêm sản phẩm');
-                productForm.action = '{{ route('createproduct') }}'
-                $('#primaryImage').attr('src', '{{ Vite::asset('resources/images/default-product.jpg') }}');
-                // Xóa dữ liệu của form cũ
-                $('#itemCode').val('');
-                $('#itemName').val('');
-                $('#itemCategory').val('').trigger('change'); // Reset dropdown
-                $('#itemBrand').val('').trigger('change'); // Reset dropdown
-                $('#sellingPrice').val('');
-                $('#stockQuantity').val('');
-                $('#description').val('');
+                    // Ẩn carousel và hiển thị container-uploadImages
+                    $('#imageCarousel').hide();
+                    $('#container-uploadImages').show();
 
-                // Ẩn hình ảnh chính và carousel
-                $('#imageCarousel').hide(); // Ẩn carousel
+                    // Reset file input và file preview
+                    $('#fileInput').val('');
+                    $('#filePreview').empty();
 
-                // Hiển thị container-uploadImages
-                $('#container-uploadImages').show();
+                    // Hiển thị modal
+                    productModal.modal('show');
+                });
 
-                // Reset file input và file preview
-                $('#fileInput').val('');
-                $('#filePreview').empty();
+                // Khi nhấn nút "Xem sản phẩm"
+                $('.btn-view').on('click', function() {
+                    resetModal();
 
-                // Hiển thị modal
-                productModal.modal('show');
-            });
+                    // Thay đổi nút thành "Cập nhật"
+                    $('#saveProduct').text('Cập nhật');
 
-            // Khi nhấn nút xem
-            $('.btn-view').on('click', function() {
-                const productId = $(this).data('product-id');
-                productForm.action = 'updateproduct'
-                // Lấy ID sản phẩm từ dữ liệu nút
-                $('#imageCarousel').show(); // Ẩn carousel
-                $('#container-uploadImages').hide();
-                // Gọi API để lấy thông tin sản phẩm
-                fetch(`/api/product/${productId}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json(); // Chuyển phản hồi thành JSON
-                    })
-                    .then(product => {
-                        // Hiển thị thông tin sản phẩm trong modal
-                        $('#productModalLabel').text('Thông tin sản phẩm'); // Cập nhật tiêu đề modal
-                        $('#itemCode').val(product.id); // Cập nhật mã sản phẩm
-                        $('#itemName').val(product.name); // Cập nhật tên sản phẩm
-                        // Kiểm tra và cập nhật category_id
-                        $('#itemCategory').val(product.category ? product.category.name :
-                            ''); // Nếu không có category_id, để trống
-                        // Kiểm tra và cập nhật brand_id
-                        $('#itemBrand').val(product.brand ? product.brand.name :
-                            ''); // Nếu không có brand_id, để trống
-                        $('#description').val(product.description); // Cập nhật mô tả (hoặc giá vốn nếu bạn muốn)
-                        $('#sellingPrice').val(product.price); // Cập nhật giá bán
-                        $('#stockQuantity').val(product.stock); // Cập nhật tồn kho
-                        // Cập nhật hình ảnh chính và gallery carousel
-                        updateImageGallery(product.images); // Cập nhật hình ảnh sản phẩm trong carousel
-                        // Hiển thị modal
-                        $('#productModal').modal('show');
-                    })
-                    .then(data => {
-                        console.log(data); // Logs the product data to the console
-                    })
-                    .catch(err => {
-                        console.error('Error fetching product:', err);
-                        alert('Không thể lấy thông tin sản phẩm.');
+                    // Lấy ID sản phẩm từ thuộc tính data của nút
+                    const productId = $(this).data('product-id');
+                    const productForm = $('#productForm');
+
+                    // Cập nhật URL action cho form và phương thức
+                    productForm.attr('action', `/admin/product/${productId}`);
+                    productForm.attr('method', 'POST'); // Dùng POST mặc định
+
+                    // Thêm trường ẩn để giả lập PUT method
+                    if ($('input[name="_method"]').length === 0) {
+                        productForm.append('<input type="hidden" name="_method" value="PUT">');
+                    }
+
+                    // Ẩn phần tải hình ảnh mới và hiển thị carousel
+                    $('#imageCarousel').show();
+                    $('#container-uploadImages').hide();
+
+                    // Gọi API lấy thông tin sản phẩm
+                    fetch(`/api/product/${productId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json(); // Chuyển phản hồi thành JSON
+                        })
+                        .then(product => {
+                            console.log('Category ID:', product.category.name);
+                            console.log('Brand ID:', product.brand.name);
+
+                            // Hiển thị thông tin sản phẩm trong modal
+                            $('#productModalLabel').text('Thông tin sản phẩm');
+                            $('#itemCode').val(product.id); // Mã sản phẩm
+                            $('#itemName').val(product.name); // Tên sản phẩm
+                            $('#description').val(product.description); // Mô tả
+                            $('#sellingPrice').val(product.price); // Giá bán
+                            $('#stockQuantity').val(product.stock); // Tồn kho
+
+                            // Cập nhật giá trị cho Nice Select
+                            $('#itemCategory').val(product.category_id);
+                            $('#itemBrand').val(product.brand_id);
+
+                            // Cập nhật giao diện Nice Select
+                            $('#itemCategory').niceSelect('update');
+                            $('#itemBrand').niceSelect('update');
+
+                            // Cập nhật hình ảnh sản phẩm
+                            updateImageGallery(product.images);
+
+                            // Hiển thị modal
+                            $('#productModal').modal('show');
+                        })
+                        .catch(err => {
+                            console.error('Error fetching product:', err);
+                            alert('Không thể lấy thông tin sản phẩm.');
+                        });
+                    // Xóa trường _method sau khi cập nhật (giả sử sau khi submit form hoặc khi đóng modal)
+
+                    $('#productModal').on('hidden.bs.modal', function() {
+                        $('input[name="_method"]').remove(); // Xóa trường _method khi đóng modal
                     });
+                });
+
+                // khi người dùng nhấn vào nút xóa sản phẩm
+                $('.btn-delete').on('click', function() {
+                    var productId = $(this).data('product-id');
+
+                    // Hiển thị hộp thoại xác nhận
+                    if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                        // Gửi yêu cầu AJAX để xóa sản phẩm
+                        $.ajax({
+                            url: '/admin/product/' + productId, // Đảm bảo đường dẫn đúng
+                            type: 'DELETE',
+                            data: {
+                                id: productId,
+                                _token: $('meta[name="csrf-token"]').attr('content') // Thêm token CSRF
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    alert('Sản phẩm đã được xóa.');
+                                    // Xóa dòng sản phẩm khỏi bảng
+                                    $('button[data-product-id="' + productId + '"]').closest('tr')
+                                        .remove();
+                                } else {
+                                    alert('Có lỗi xảy ra khi xóa sản phẩm.');
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                alert('Đã xảy ra lỗi. Vui lòng thử lại.');
+                                console.log(error); // Xem chi tiết lỗi nếu cần
+                            }
+                        });
+                    }
+                });
+                // hàm reset Modal
+                function resetModal() {
+                    $('#itemCode').val(''); // Mã sản phẩm
+                    $('#itemName').val(''); // Tên sản phẩm
+                    $('#sellingPrice').val(''); // Giá bán
+                    $('#stockQuantity').val(''); // Tồn kho
+                    $('#description').val(''); // Mô tả
+                    // Reset giá trị các ô select về giá trị mặc định
+                    $('#itemCategory').val('').niceSelect('update'); // Đặt lại select nhóm hàng về giá trị mặc định
+                    $('#itemBrand').val('').niceSelect('update'); // Đặt lại select thương hiệu về giá trị mặc định
+                }
+                // hàm cập nhật lại hình ảnh trong modal
+                function updateImageGallery(images) {
+                    const indicators = document.querySelector('#imageCarousel .carousel-indicators');
+                    const inner = document.querySelector('#imageCarousel .carousel-inner');
+                    const primaryImageElement = document.getElementById('primaryImage');
+                    const baseUrl = window.location.origin;
+
+                    const totalSlides = images.length; // Total number of slides needed
+                    // Xóa các phần tử cũ trong carousel
+                    indicators.innerHTML = '';
+                    inner.innerHTML = '';
+
+                    if (totalSlides === 0) {
+                        console.log("No images to display.");
+                        return; // Nếu không có ảnh, dừng hàm
+                    }
+
+                    let primaryImageFound = false; // Biến kiểm tra xem ảnh chính đã được tìm thấy chưa
+
+                    // Tìm và gán ảnh chính vào phần tử primaryImage
+                    const primaryImage = images.find(image => image.is_primary === 1);
+                    if (primaryImage) {
+                        primaryImageElement.src = `${baseUrl}/storage/${primaryImage.image_url}`;
+                        primaryImageFound = true; // Đánh dấu là ảnh chính đã được tìm thấy và gán
+                    }
+
+                    // Tiến hành tạo carousel cho các ảnh còn lại
+                    for (let index = 0; index < totalSlides; index++) {
+                        // Nếu ảnh này là ảnh chính, bỏ qua nó trong carousel
+                        if (images[index].is_primary === 1) {
+                            continue;
+                        }
+
+                        // Add indicators
+                        const indicator = document.createElement('li');
+                        indicator.setAttribute('data-target', '#imageCarousel');
+                        indicator.setAttribute('data-slide-to', index);
+                        if (index === 0) indicator.classList.add('active');
+                        indicators.appendChild(indicator);
+
+                        // Add carousel items
+                        const item = document.createElement('div');
+                        item.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+                        const group = document.createElement('div');
+                        group.className = 'd-flex justify-content-center';
+
+                        // Add exactly 3 images per slide (wrapping around if needed)
+                        for (let i = 0; i < 3; i++) {
+                            const imgIndex = (index + i) % images.length; // Wrap around using modulo
+                            const img = document.createElement('img');
+
+                            // Extract the image URL from the current image object
+                            const imageUrl = images[imgIndex].image_url;
+                            // Construct the full image URL
+                            img.src = `${baseUrl}/storage/${imageUrl}`;
+
+                            img.className = 'image-small mx-2';
+                            group.appendChild(img);
+                        }
+
+                        item.appendChild(group);
+                        inner.appendChild(item);
+                    }
+                }
             });
-
-            function updateImageGallery(images) {
-                const indicators = document.querySelector('#imageCarousel .carousel-indicators');
-                const inner = document.querySelector('#imageCarousel .carousel-inner');
-                const primaryImageElement = document.getElementById('primaryImage');
-                const baseUrl = window.location.origin;
-
-                const totalSlides = images.length; // Total number of slides needed
-
-                if (totalSlides === 0) {
-                    console.log("No images to display.");
-                    return; // Nếu không có ảnh, dừng hàm
-                }
-
-                let primaryImageFound = false; // Biến kiểm tra xem ảnh chính đã được tìm thấy chưa
-
-                // Tìm và gán ảnh chính vào phần tử primaryImage
-                const primaryImage = images.find(image => image.is_primary === 1);
-                if (primaryImage) {
-                    primaryImageElement.src = `${baseUrl}/storage/${primaryImage.image_url}`;
-                    primaryImageFound = true; // Đánh dấu là ảnh chính đã được tìm thấy và gán
-                }
-
-                // Tiến hành tạo carousel cho các ảnh còn lại
-                for (let index = 0; index < totalSlides; index++) {
-                    // Nếu ảnh này là ảnh chính, bỏ qua nó trong carousel
-                    if (images[index].is_primary === 1) {
-                        continue;
-                    }
-
-                    // Add indicators
-                    const indicator = document.createElement('li');
-                    indicator.setAttribute('data-target', '#imageCarousel');
-                    indicator.setAttribute('data-slide-to', index);
-                    if (index === 0) indicator.classList.add('active');
-                    indicators.appendChild(indicator);
-
-                    // Add carousel items
-                    const item = document.createElement('div');
-                    item.className = `carousel-item ${index === 0 ? 'active' : ''}`;
-                    const group = document.createElement('div');
-                    group.className = 'd-flex justify-content-center';
-
-                    // Add exactly 3 images per slide (wrapping around if needed)
-                    for (let i = 0; i < 3; i++) {
-                        const imgIndex = (index + i) % images.length; // Wrap around using modulo
-                        const img = document.createElement('img');
-
-                        // Extract the image URL from the current image object
-                        const imageUrl = images[imgIndex].image_url;
-                        // Construct the full image URL
-                        img.src = `${baseUrl}/storage/${imageUrl}`;
-
-                        img.className = 'image-small mx-2';
-                        group.appendChild(img);
-                    }
-
-                    item.appendChild(group);
-                    inner.appendChild(item);
-                }
-            }
         </script>
         <script>
             document.getElementById('fileInput').addEventListener('change', function(event) {
                 const files = event.target.files; // Lấy các file người dùng chọn
                 const maxSize = 5 * 1024 * 1024; // Giới hạn dung lượng là 5MB (5 * 1024 * 1024 bytes)
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif']; // Các loại file hợp lệ
                 let valid = true;
-
                 // Duyệt qua từng file
                 for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    if (file.size > maxSize) {
+                    // Kiểm tra loại file
+                    if (!allowedTypes.includes(files[i].type)) {
+                        valid = false;
+                        break; // Nếu một file không hợp lệ, dừng kiểm tra
+                    }
+
+                    // Kiểm tra dung lượng file
+                    if (files[i].size > maxSize) {
                         valid = false;
                         break; // Nếu một file vượt quá dung lượng, dừng kiểm tra
                     }
                 }
 
-                // Hiển thị thông báo lỗi nếu dung lượng ảnh vượt quá giới hạn
+                // Hiển thị thông báo lỗi nếu file không hợp lệ hoặc dung lượng ảnh vượt quá giới hạn
                 if (!valid) {
                     document.getElementById('errorMessage').style.display = 'block'; // Hiển thị lỗi
-                    // Xóa lựa chọn file
-                    document.getElementById('fileInput').value = '';
+                    document.getElementById('fileInput').value = ''; // Xóa lựa chọn file
                 } else {
                     document.getElementById('errorMessage').style.display = 'none'; // Ẩn thông báo lỗi
                 }
             });
+
 
             document.addEventListener('DOMContentLoaded', function() {
                 const fileInput = document.getElementById('fileInput');
