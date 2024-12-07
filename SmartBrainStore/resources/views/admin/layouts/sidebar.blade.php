@@ -72,7 +72,7 @@
 
                     @if (Auth::check())
                         <span>
-                            <img alt="image" class="img-circle" style="padding-right:10px"
+                            <img alt="image" class="img-circle" style="padding-right:10px; width:60px"
                                 src="{{ Vite::asset('resources/images/favicon.png') }}" />
                         </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">

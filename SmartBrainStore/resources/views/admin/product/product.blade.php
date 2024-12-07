@@ -1,10 +1,21 @@
 @extends('admin.layouts.app')
 @section('content')
     <section class="p-3" style="padding-right: 30px">
-        <div class="row" style="margin-bottom: 10px">
-            <div class="col-12" style="display:flex;justify-content:flex-end">
-                <button class="btn btn-primary btn-add newUser" data-toggle="modal" data-target="#productModal">Thêm sản
-                    phẩm</button>
+        <div class="row mb-3 d-flex" style="align-items: center; padding-bottom: 10px">
+            <!-- Search bar (bên trái) -->
+            <div class="col-8 d-flex" style="justify-content: center;align-items:center">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <div class="input-group">
+                    <span class="input-group-text"></span>
+                    <input type="text" class="form-control" placeholder="Search here..." aria-label="Search">
+                </div>
+            </div>
+
+            <!-- Button (bên phải) -->
+            <div class="col-4 d-flex" style="justify-content:flex-end;align-items:flex-end">
+                <button class="btn btn-primary btn-add newUser" data-bs-toggle="modal" data-bs-target="#productModal">
+                    Thêm sản phẩm
+                </button>
             </div>
         </div>
 

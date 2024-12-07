@@ -10,6 +10,10 @@ class CheckRole
 {
     public function handle(Request $request, Closure $next, ...$roles)
     {
+        if (!Auth::check()) {
+            // Chuyển hướng đến trang đăng nhập
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để tiếp tục.');
+        }
         $user = Auth::user();
 
         if (!in_array($user->role, $roles)) {
