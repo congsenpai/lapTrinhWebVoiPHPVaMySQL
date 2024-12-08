@@ -83,6 +83,8 @@ Route::get('admin/customer', [CustomerController::class, 'showAdminCustomerForm'
 // trang voucher
 Route::get('admin/voucher', [VoucherController::class, 'showAdminVoucherForm'])->name('adminvoucher')->middleware('check.role:admin,staff');
 // trang khuyến mãi
-Route::get('admin/promotion', [PromotionController::class, 'showAdminPromotionForm'])->name('adminpromotion')->middleware('check.role:admin,staff');
+Route::get('/admin/promotion', [PromotionController::class, 'getPromotions'])->name('adminpromotion')->middleware('check.role:admin,staff');
+Route::get('admin/promotion/{id}', [PromotionController::class, 'showDetail'])->name('promotionshowdetail')->middleware('check.role:admin,staff');;
+
 // trang đổi mật khẩu
 Route::get('admin/changepassword', [AuthController::class, 'showAdminChangePassForm'])->name('adminchangepass')->middleware('check.role:admin,staff');
