@@ -71,6 +71,7 @@ Route::get('admin/category', [CategoryController::class, 'showAdminCategoryForm'
 // trang sản phẩm
 // trang product
 Route::get('admin/product', [ProductController::class, 'getAllProduct'])->name('adminproduct')->middleware('check.role:admin,staff');
+Route::get('admin/product', [ProductController::class, 'getAdminProduct'])->name('adminproduct')->middleware('check.role:admin,staff');
 Route::post('admin/product', [ProductController::class, 'store'])->name('createproduct')->middleware('check.role:admin,staff');
 Route::put('admin/product/{id}', [ProductController::class, 'update'])->name('updateproduct')->middleware('check.role:admin,staff');
 Route::delete('admin/product/{id}', [ProductController::class, 'deleteProduct'])->name('deleteproduct')->middleware('check.role:admin,staff');;

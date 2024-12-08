@@ -1,21 +1,22 @@
 @extends('admin.layouts.app')
 @section('content')
     <section class="p-3" style="padding-right: 30px">
-        <div class="row mb-3 d-flex" style="align-items: center; padding-bottom: 10px">
+        <div class="row mb-3 d-flex" style="justify-content:space-between; padding-bottom: 10px;">
             <!-- Search bar (bên trái) -->
-            <div class="col-8 d-flex" style="justify-content: center;align-items:center">
+            <div class="col-8 d-flex"
+                style=" justify-content:center;align-items:center; align-self:flex-start; padding-right:20%">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <div class="input-group">
                     <span class="input-group-text"></span>
-                    <input type="text" class="form-control" placeholder="Search here..." aria-label="Search">
+                    <input type="text" class="form-control" placeholder="Search here..." aria-label="Search"
+                        id="search-input" style="width: 320px">
                 </div>
             </div>
 
             <!-- Button (bên phải) -->
-            <div class="col-4 d-flex" style="justify-content:flex-end;align-items:flex-end">
-                <button class="btn btn-primary btn-add newUser" data-bs-toggle="modal" data-bs-target="#productModal">
-                    Thêm sản phẩm
-                </button>
+            <div class="col-4 d-flex" style=" padding-left:20%;align-self:flex-end">
+                <button class="btn btn-primary btn-add newUser" data-toggle="modal" data-target="#productModal">Thêm sản
+                    phẩm</button>
             </div>
         </div>
 
@@ -473,6 +474,32 @@
                         selector.style.backgroundImage = ''; // Xóa ảnh trên selector
                     });
                     updatePreview([]); // Xóa toàn bộ preview
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('search-input');
+                const productData = document.getElementById('data');
+                const pagination = document.getElementById('pagination');
+
+                searchInput.addEventListener('input', function() {
+                    const keyword = searchInput.value;
+
+                    // Gửi AJAX request
+                    fetch(`/admin/product?s=${keyword}`, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest', // Đánh dấu là AJAX
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.adminproduct && data.pagination) {
+                                productData.innerHTML = data.adminproduct;
+                                pagination.innerHTML = data.pagination;
+                            }
+                        })
+                        .catch(error => console.error('Error fetching products:', error));
                 });
             });
         </script>

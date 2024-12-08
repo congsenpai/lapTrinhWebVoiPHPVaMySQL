@@ -161,6 +161,46 @@ class ProductController extends Controller
         // Trả về view chính
         return view('admin.product.product', compact('products', 'brands', 'categories'));
     }
+
+    public function getAdminProduct(Request $request)
+    {
+        $categories = Category::all();
+        $brands = Brand::all();
+        $brands = Brand::all(); // Lấy danh sách thương hiệu
+        // Lấy danh mục từ database
+        $categories = Category::all();
+        // Xây dựng query sản phẩm
+        $query = Product::where('status', 'active'); // Chỉ lấy sản phẩm còn sống
+        // Tìm kiếm theo tên sản phẩm
+        if ($request->has('s') && $request->s !== '') {
+            $query->where('name', 'like', '%' . $request->s . '%');
+        }
+        // Lọc theo loại sản phẩm
+        if ($request->has('category') && $request->brand != 'all') {
+            $query->where('category_id', $request->category);
+        }
+        // Lọc theo thương hiệu
+        if ($request->has('brand') && $request->brand != 'all') {
+            $query->where('brand_id', $request->brand);
+        }
+        // Phân trang
+        $products = $query->paginate(8); // 8 sản phẩm mỗi trang
+
+        // Kiểm tra nếu là AJAX request
+        if ($request->ajax()) {
+            // Render HTML cho các sản phẩm và phân trang
+            $productsHtml = view('partials.adminproduct', compact('products'))->render();
+            $paginationHtml = view('partials.pagination', compact('products'))->render();
+
+            return response()->json([
+                'adminproduct' => $productsHtml,
+                'pagination' => $paginationHtml
+            ]);
+        }
+
+        // Trả về view chính
+        return view('admin.product.product', compact('products', 'brands', 'categories'));
+    }
     // Lưu sản phẩm mới
     public function store(Request $request)
     {
