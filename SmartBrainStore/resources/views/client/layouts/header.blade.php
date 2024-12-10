@@ -53,14 +53,14 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-2 col-md-6 col-xs-6">
                         <a href="{{ route('home') }}" class="biolife-logo"><img
-                                src="{{ Vite::asset('resources/images/logo.png') }}" alt="biolife logo"
-                                width="135" height="34"></a>
+                                src="{{ Vite::asset('resources/images/logo.png') }}" alt="biolife logo" width="135"
+                                height="34"></a>
                     </div>
                     <div class="col-lg-6 col-md-7 hidden-sm hidden-xs">
                         <div class="primary-menu">
                             <ul class="menu biolife-menu clone-main-menu clone-primary-menu" id="primary-menu"
                                 data-menuname="main menu">
-                                <li class="menu-item"><a href="/index.html">Trang chủ</a></li>
+                                <li class="menu-item"><a href="{{route('home')}}">Trang chủ</a></li>
                                 <li class="menu-item menu-item-has-children has-megamenu">
                                     <a href="#" class="menu-name">Cửa hàng</a>
                                     <div class="wrap-megamenu lg-width-900 md-width-750">
@@ -121,7 +121,7 @@
                                     </div>
                                 </li>
                                 <li class="menu-item menu-item-has-children has-child">
-                                    <a href="#" class="menu-name">Sản phẩm</a>
+                                    <a href="{{route('product')}}" class="menu-name">Sản phẩm</a>
                                     <ul class="sub-menu">
                                         <li class="menu-item"><a href="#">Trái cây tươi</a></li>
                                         <li class="menu-item"><a href="#">Quà tặng</a></li>
@@ -161,7 +161,7 @@
                     </div>
                     <div class="col-lg-3 col-md-3 col-md-6 col-xs-6"
                         style="display:flex; justify-content:space-between; padding:5px">
-                        <button onclick="" class="cart-config">
+                        <button onclick="window.location.href='/cart'" class="cart-config">
                             Giỏ hàng
                             <i class="fa-solid fa-cart-shopping" style="color: #ff0000;"></i>
                         </button>

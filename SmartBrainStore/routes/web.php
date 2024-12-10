@@ -10,8 +10,9 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CategoryController;
-use App\Models\Category;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 // Các route dành cho client
 // đăng nhập
@@ -49,8 +50,13 @@ Route::get('/product', [ProductController::class, 'index'])->name('product');
 // product details
 Route::get('/product/{id}', [ProductController::class, 'showProductDetail'])->name('productdetail');
 Route::get('/api/product/{id}', [ProductController::class, 'showProductDetailJson']);
-
-
+// trang giỏ hàng
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update/{rowId}', [CartController::class, 'update'])->name('cart.update');
+Route::get('/cart/remove/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+Route::post('/cart', [CartController::class, 'updateAll'])->name('cartUpdateAll');
 
 // các route dành cho admin
 

@@ -72,7 +72,8 @@
                                     <li class="product-item col-lg-4 col-md-4 col-sm-4 col-xs-6">
                                         <div class="contain-product layout-default">
                                             <div class="product-thumb">
-                                                <a href="{{ route('productdetail', $product->id) }}" class="link-to-product">
+                                                <a href="{{ route('productdetail', $product->id) }}"
+                                                    class="link-to-product">
                                                     @php
                                                         $primaryImage = $product->images
                                                             ->where('is_primary', true)
@@ -82,7 +83,7 @@
                                                             : asset('resources/images/default-product.jpg');
                                                     @endphp
                                                     <img src="{{ $imageUrl }}" alt="{{ $product->name }}"
-                                                        width="270" height="270" style="object-fit: contain"
+                                                        width="270" height="270" style="object-position: center; object-fit:full;max-height:180px"
                                                         class="product-thumbnail">
                                                 </a>
                                             </div>
@@ -102,16 +103,24 @@
                                                 <p class="message">All products are carefully selected to ensure
                                                     food
                                                     safety.</p>
-                                                <div class="buttons">
+                                                <form action="{{ route('cart.add') }}" method="POST" class="buttons" style="align-items: center; display:flex; justify-content:space-between">
+                                                    @csrf
                                                     <a href="#" class="btn wishlist-btn"><i class="fa fa-heart"
                                                             aria-hidden="true"></i></a>
-                                                    <a href="#" class="btn add-to-cart-btn"><i
-                                                            class="fa fa-cart-arrow-down" aria-hidden="true"></i>add
-                                                        to
-                                                        cart</a>
+                                                    <input type="hidden" name="id" value="{{ $product->id }}">
+                                                    <input type="hidden" name="name" value="{{ $product->name }}">
+                                                    <input type="hidden" name="price" value="{{ $product->price }}">
+                                                    <input type="hidden" name="image"
+                                                        value="{{ $imageUrl }}">
+                                                        <input type="hidden" name="qty" value="1">
+
+                                                    <button type="submit" class="btn add-to-cart-btn">
+                                                        <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+                                                        Thêm vào giỏ hàng
+                                                    </button>
                                                     <a href="#" class="btn compare-btn"><i class="fa fa-random"
                                                             aria-hidden="true"></i></a>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </li>

@@ -43,7 +43,13 @@
         <script>
             @if (session('success'))
                 toastr.success("{{ session('success') }}", '', {
-                    timeOut: 2000,
+                    timeOut: 5000,
+                    positionClass: 'toast-bottom-right'
+                });
+            @endif
+            @if (session('info'))
+                toastr.info("{{ session('info') }}", '', {
+                    timeOut: 5000,
                     positionClass: 'toast-bottom-right'
                 });
             @endif
@@ -51,7 +57,7 @@
             @if ($errors->any())
                 @foreach ($errors->all() as $error)
                     toastr.error("{{ $error }}", '', {
-                        timeOut: 2000,
+                        timeOut: 5000,
                         positionClass: 'toast-bottom-right'
                     });
                 @endforeach
