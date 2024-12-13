@@ -96,24 +96,28 @@
                                     <input type="text" class="form-control" id="itemName" name="name">
                                 </div>
                                 <div class="form-group d-flex align-items-center">
-                                    <label for="itemName" class="form-label mr-2">Loại khuyến mại:</label>
+                                    <label for="itemType" class="form-label mr-2">Loại khuyến mại:</label>
                                     <select id="itemType" name="discount_type" class="form-control">
-                                        <option value="percentage">Giảm giá theo phần trăm</option>
+                                        <option value="percentage" selected>Giảm giá theo phần trăm</option>
                                         <option value="fixed">Giảm giá cố định</option>
                                     </select>
                                 </div>
                                 <div class="form-group d-flex align-items-center">
-                                    <label for="itemName" class="form-label mr-2">Giá trị khuyến mại:</label>
-                                    <input type="number" class="form-control" id="itemValue" name="value">
+                                    <label for="itemValue" class="form-label mr-2">Giá trị khuyến mại:</label>
+                                    <input type="number" class="form-control" id="itemValue" name="discount_value">
                                 </div>
                                 <div class="dateTime-container d-flex" style="width:60%;justify-content:space-between;">
                                     <div class="form-group">
-                                        <label for="startDate form-label mr-2" style="font-weight: bold;width:100%">Từ ngày:</label>
-                                        <input type="date" id="startDate" name="start_date" class="form-control" style="width:100%">
+                                        <label for="startDate form-label mr-2" style="font-weight: bold;width:100%">Từ
+                                            ngày:</label>
+                                        <input type="date" id="startDate" name="start_date" class="form-control"
+                                            style="width:100%">
                                     </div>
                                     <div class="form-group">
-                                        <label for="endDate form-label mr-2" style="font-weight: bold;width:100%">Đến ngày:</label>
-                                        <input type="date" id="endDate" name="end_date" class="form-control" style="width:100%">
+                                        <label for="endDate form-label mr-2" style="font-weight: bold;width:100%">Đến
+                                            ngày:</label>
+                                        <input type="date" id="endDate" name="end_date" class="form-control"
+                                            style="width:100%">
                                     </div>
                                 </div>
 
@@ -150,7 +154,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="savePromotion" class="btn btn-success">Lưu</button>
+                        <button type="submit" id="savePromotion" class="btn btn-success btn-save">Lưu</button>
                         <button class="btn btn-secondary" data-dismiss="modal">Bỏ qua</button>
                     </div>
                 </form>
@@ -281,4 +285,82 @@
                 });
             });
         </script>
+        {{-- script nút btn-add --}}
+        <script>
+            $(document).ready(function() {
+                // Get the product list from the server
+                var products = <?php echo json_encode($products); ?>;
+                console.log(products);
+
+                $('.btn-add').on('click', function() {
+                    $('#btn-save').text('Lưu');
+                    $('#promotionModalLabel').text('Thêm mới khuyến mãi');
+
+                    $('#itemCode').val('');
+                    $('#itemName').val('');
+                    $('#description').val('');
+                    $('#itemType').val('');
+                    $('#itemValue').val('');
+                    $('#startDate').val('');
+                    $('#endDate').val('');
+
+                    const productList = $('#productList');
+                    productList.empty();
+
+                    products.forEach(product => {
+                        try {
+                            const productItem = `
+                            <div class="product-item" data-name="${product.name.toLowerCase()}">
+                            <input type="checkbox" id="product${product.id}" name="products[]" value="${product.id}">
+                            <label for="product${product.id}">${product.name}</label>
+                            </div>`;
+                            productList.append(productItem);
+                        } catch (error) {
+                            console.error('Lỗi khi thêm sản phẩm:', error);
+                        }
+                    });
+                });
+
+                $('#btn-save').on('click', function() {
+                    // Check if the discount_type is empty or not selected, and set it to 'percentage' by default
+                    let discountType = $('#itemType').val();
+                    if (!discountType) {
+                        discountType = 'percentage'; // Default to 'percentage' if not selected
+                    }
+                    const promotionData = {
+                        name: $('#itemName').val(),
+                        description: $('#description').val(),
+                        discount_type: discountType,
+                        discount_value: $('#itemValue').val(),
+                        start_date: $('#startDate').val(),
+                        end_date: $('#endDate').val(),
+                        products: []
+                    };
+                    console.log(promotionData);
+
+                    $('#productList input[name="products[]"]:checked').each(function() {
+                        promotionData.products.push($(this).val());
+                    });
+
+                    $.ajax({
+                        url: '{{ route('promotion.add') }}',
+                        type: 'POST',
+                        data: promotionData,
+                        success: function(response) {
+                            if (response.success) {
+                                alert('Khuyến mãi đã được thêm thành công.');
+                                $('#promotionModal').modal('hide');
+                            } else {
+                                alert('Không thể thêm khuyến mãi.');
+                            }
+                        },
+                        error: function() {
+                            alert('Có lỗi xảy ra khi gửi yêu cầu.');
+                        }
+                    });
+                });
+            });
+        </script>
+
+        <script></script>
     @endsection

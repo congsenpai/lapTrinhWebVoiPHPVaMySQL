@@ -45,7 +45,7 @@ class PromotionController extends Controller
                 'success' => true,
                 'promotion' => $promotion,
                 'productsUsingPromotion' => $productsUsingPromotion,
-                'product'=>$product
+                'product' => $product
             ]);
         }
 
@@ -53,5 +53,41 @@ class PromotionController extends Controller
             'success' => false,
             'message' => 'Khuyến mãi không tồn tại.'
         ], 404);
+    }
+    public function store(Request $request)
+    {
+        // Xác thực dữ liệu
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'discount_type' => 'required|string|in:percentage,fixed', // Kiểm tra discount_type
+            'discount_value' => 'required|numeric',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'products' => 'array', // Danh sách sản phẩm
+        ]);
+
+        // Kiểm tra giá trị discount_type có hợp lệ không
+        if (!Promotion::isValidDiscountType($validated['discount_type'])) {
+            return response()->json(['success' => false, 'message' => 'Loại giảm giá không hợp lệ.'], 400);
+        }
+
+        // Tạo mới khuyến mãi
+        $promotion = new Promotion();
+        $promotion->name = $validated['name'];
+        $promotion->description = $validated['description'] ?? '';
+        $promotion->discount_type = $validated['discount_type'];
+        $promotion->discount_value = $validated['discount_value'];
+        $promotion->start_date = $validated['start_date'];
+        $promotion->end_date = $validated['end_date'];
+        $promotion->save();
+
+        // Gắn sản phẩm vào khuyến mãi
+        if (!empty($validated['products'])) {
+            $promotion->products()->sync($validated['products']);
+        }
+
+        // Trả về phản hồi cho client
+        return redirect()->route('adminpromotion')->with('success', 'Chương trình khuyến mãi đã được cập nhật!');
     }
 }
