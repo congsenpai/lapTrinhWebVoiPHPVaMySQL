@@ -140,14 +140,6 @@
                                     <label>Chọn sản phẩm:</label>
                                     <div id="productList">
                                         <!-- Danh sách sản phẩm sẽ được render tại đây -->
-                                        @foreach ($products as $product)
-                                            <div class="product-item" data-name="{{ strtolower($product->name) }}">
-                                                <input type="checkbox" id="product{{ $product->id }}" name="products[]"
-                                                    value="{{ $product->id }}"
-                                                    @if ($promotion->products->contains($product->id)) checked @endif>
-                                                <label for="product{{ $product->id }}">{{ $product->name }}</label>
-                                            </div>
-                                        @endforeach
                                     </div>
                                 </div>
 
@@ -192,6 +184,7 @@
                 $('.btn-view').on('click', function() {
                     const promotionId = $(this).data('id'); // Lấy ID từ nút
                     $('#promotionModalLabel').text('Thông tin chi tiết');
+
                     // Gửi yêu cầu AJAX để lấy chi tiết khuyến mãi
                     $.ajax({
                         url: `/admin/promotion/${promotionId}`, // Đường dẫn API hoặc route để lấy dữ liệu
@@ -199,7 +192,11 @@
                         success: function(response) {
                             // Kiểm tra dữ liệu trả về từ server
                             if (response.success) {
-                                const promotion = response.data; // Dữ liệu khuyến mãi từ server
+                                const promotion = response
+                                    .promotion; // Dữ liệu khuyến mãi từ server
+                                const products = response.product;
+                                const productsUsingPromotion = response
+                                    .productsUsingPromotion; // Danh sách sản phẩm có ưu đãi
 
                                 // Đổ dữ liệu vào các trường trong modal
                                 $('#itemCode').val(promotion.id); // Mã khuyến mãi
@@ -209,8 +206,32 @@
                                 $('#itemValue').val(promotion.discount_value);
                                 $('#starDate').val(promotion.start_date);
                                 $('#endDate').val(promotion.end_date);
+
+                                // Đặt trạng thái checked cho các sản phẩm có ưu đãi
+                                // Tạo danh sách sản phẩm trong productList
+                                const productList = $('#productList');
+                                productList.empty(); // Xóa các sản phẩm cũ
+                                console.log(products);
+                                console.log(productsUsingPromotion);
+
+
+                                products.forEach(product => {
+                                    // Kiểm tra xem sản phẩm có trong danh sách productsUsingPromotion không
+                                    const isChecked = productsUsingPromotion.some(
+                                        promotionProduct => promotionProduct.id ===
+                                        product.id) ? 'checked' : '';
+
+                                    const productItem = `
+        <div class="product-item" data-name="${product.name.toLowerCase()}">
+            <input type="checkbox" id="product${product.id}" name="products[]" value="${product.id}" ${isChecked}>
+            <label for="product${product.id}">${product.name}</label>
+        </div>`;
+
+                                    productList.append(productItem);
+                                });
                                 // Hiển thị modal
                                 $('#promotionModal').modal('show');
+
                             } else {
                                 alert('Không thể tải dữ liệu khuyến mãi.'); // Xử lý lỗi nếu cần
                             }
@@ -220,49 +241,40 @@
                         }
                     });
                 });
-            });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const applyAllRadio = document.getElementById('applyAll');
-                const applySpecificRadio = document.getElementById('applySpecific');
-                const specificProductsDiv = document.getElementById('specificProducts');
 
-                applyAllRadio.addEventListener('change', function() {
-                    if (applyAllRadio.checked) {
-                        specificProductsDiv.style.display = 'none'; // Ẩn danh sách checkbox
+                // Bắt sự kiện thay đổi trạng thái áp dụng khuyến mãi
+                $('#applyAll').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        $('#specificProducts').hide(); // Ẩn danh sách checkbox nếu áp dụng toàn bộ sản phẩm
                     }
                 });
 
-                applySpecificRadio.addEventListener('change', function() {
-                    if (applySpecificRadio.checked) {
-                        specificProductsDiv.style.display = 'block'; // Hiển thị danh sách checkbox
+                $('#applySpecific').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        $('#specificProducts').show(); // Hiển thị danh sách checkbox nếu chọn sản phẩm cụ thể
                     }
                 });
-            });
-            // ngăn hành động gửi form của id này
-            document.getElementById('searchProduct').addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Ngăn hành động mặc định là gửi form
-                }
-            });
-            // script tìm kiếm sản phẩm trực tiếp
-            document.getElementById('searchProduct').addEventListener('input', function() {
-                const keyword = this.value.toLowerCase(); // Lấy từ khóa tìm kiếm và chuyển thành chữ thường
 
-                // Lấy tất cả các sản phẩm trong danh sách
-                const productItems = document.querySelectorAll('.product-item');
-
-                // Duyệt qua tất cả các sản phẩm và kiểm tra xem tên sản phẩm có chứa từ khóa tìm kiếm không
-                productItems.forEach(item => {
-                    const productName = item.getAttribute(
-                        'data-name'); // Lấy tên sản phẩm (đã chuyển thành chữ thường)
-
-                    if (productName.includes(keyword)) {
-                        item.style.display = ''; // Hiển thị sản phẩm nếu tên chứa từ khóa
-                    } else {
-                        item.style.display = 'none'; // Ẩn sản phẩm nếu tên không chứa từ khóa
+                // Ngăn hành động gửi form khi nhấn Enter trong ô tìm kiếm
+                $('#searchProduct').on('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
                     }
+                });
+
+                // Tìm kiếm sản phẩm trực tiếp
+                $('#searchProduct').on('input', function() {
+                    const keyword = $(this).val().toLowerCase(); // Lấy từ khóa tìm kiếm
+
+                    // Lọc các sản phẩm trong danh sách
+                    $('#productList .product-item').each(function() {
+                        const productName = $(this).data('name'); // Lấy tên sản phẩm
+                        if (productName.includes(keyword)) {
+                            $(this).show(); // Hiển thị sản phẩm nếu khớp từ khóa
+                        } else {
+                            $(this).hide(); // Ẩn sản phẩm nếu không khớp
+                        }
+                    });
                 });
             });
         </script>

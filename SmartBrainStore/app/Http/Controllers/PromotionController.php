@@ -38,10 +38,14 @@ class PromotionController extends Controller
     {
 
         $promotion = Promotion::find($id);
+        $product = Product::where('status', 'active')->get();
         if ($promotion) {
+            $productsUsingPromotion = $promotion->products->where('status', 'active');
             return response()->json([
                 'success' => true,
-                'data' => $promotion
+                'promotion' => $promotion,
+                'productsUsingPromotion' => $productsUsingPromotion,
+                'product'=>$product
             ]);
         }
 
@@ -54,13 +58,15 @@ class PromotionController extends Controller
     public function showPromotionProducts($promotionId)
     {
         // Lấy khuyến mãi và các sản phẩm liên kết
-        $promotion = Promotion::with('products')->findOrFail($promotionId);
-        $products = Product::where('status', 'active')->get(); // Lấy tất cả sản phẩm
-        dd($promotion->products);
+        $promotion = Promotion::find($promotionId);
+        if ($promotion) {
+            $productsUsingPromotion = $promotion->products;
+        }
+        // Lấy danh sách sản phẩm sử dụng khuyến mãi
         // Truyền danh sách sản phẩm khuyến mãi và tất cả sản phẩm vào view
         return view('admin.promotion.promotion', [
-            'promotion' => $promotion,
-            'products' => $products,
+            'productsUsingPromotion' => $productsUsingPromotion,
+            'promotion'=>$promotion
         ]);
     }
 }
