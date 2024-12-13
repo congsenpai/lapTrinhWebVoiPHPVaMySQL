@@ -54,19 +54,4 @@ class PromotionController extends Controller
             'message' => 'Khuyến mãi không tồn tại.'
         ], 404);
     }
-    // Hiển thị các sản phẩm được khuyến mại theo promotionID truyền vào
-    public function showPromotionProducts($promotionId)
-    {
-        // Lấy khuyến mãi và các sản phẩm liên kết
-        $promotion = Promotion::find($promotionId);
-        if ($promotion) {
-            $productsUsingPromotion = $promotion->products;
-        }
-        // Lấy danh sách sản phẩm sử dụng khuyến mãi
-        // Truyền danh sách sản phẩm khuyến mãi và tất cả sản phẩm vào view
-        return view('admin.promotion.promotion', [
-            'productsUsingPromotion' => $productsUsingPromotion,
-            'promotion'=>$promotion
-        ]);
-    }
 }
