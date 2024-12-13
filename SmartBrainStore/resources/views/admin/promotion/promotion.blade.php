@@ -97,26 +97,29 @@
                                 </div>
                                 <div class="form-group d-flex align-items-center">
                                     <label for="itemName" class="form-label mr-2">Loại khuyến mại:</label>
-                                    <input type="text" class="form-control" id="itemType" name="type">
+                                    <select id="itemType" name="discount_type" class="form-control">
+                                        <option value="percentage">Giảm giá theo phần trăm</option>
+                                        <option value="fixed">Giảm giá cố định</option>
+                                    </select>
                                 </div>
                                 <div class="form-group d-flex align-items-center">
                                     <label for="itemName" class="form-label mr-2">Giá trị khuyến mại:</label>
-                                    <input type="text" class="form-control" id="itemValue" name="value">
+                                    <input type="number" class="form-control" id="itemValue" name="value">
                                 </div>
-                                <div class="dateTime-container d-flex">
+                                <div class="dateTime-container d-flex" style="width:60%;justify-content:space-between;">
                                     <div class="form-group">
-                                        <label for="startDate form-label mr-2" style="font-weight: bold">Từ ngày:</label>
-                                        <input type="datetime-local" id="startDate" name="start_date" class="form-control">
+                                        <label for="startDate form-label mr-2" style="font-weight: bold;width:100%">Từ ngày:</label>
+                                        <input type="date" id="startDate" name="start_date" class="form-control" style="width:100%">
                                     </div>
                                     <div class="form-group">
-                                        <label for="endDate form-label mr-2">Đến ngày:</label>
-                                        <input type="datetime-local" id="endDate" name="end_date" class="form-control">
+                                        <label for="endDate form-label mr-2" style="font-weight: bold;width:100%">Đến ngày:</label>
+                                        <input type="date" id="endDate" name="end_date" class="form-control" style="width:100%">
                                     </div>
                                 </div>
 
                                 <div class="form-group d-flex align-items-center">
-                                    <label for="description" class="form-label mr-2">Mô tả</label>
-                                    <textarea class="form-control" id="description" rows="2" name="description"></textarea>
+                                    <label for="description" class="form-label mr-2" style="width: 10%">Mô tả</label>
+                                    <textarea class="form-control" id="description" rows="2" name="description" style="width: 90%;margin-left:30px"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -197,6 +200,7 @@
                                 const products = response.product;
                                 const productsUsingPromotion = response
                                     .productsUsingPromotion; // Danh sách sản phẩm có ưu đãi
+                                console.log(promotion);
 
                                 // Đổ dữ liệu vào các trường trong modal
                                 $('#itemCode').val(promotion.id); // Mã khuyến mãi
@@ -204,7 +208,7 @@
                                 $('#description').val(promotion.description); // Mô tả khuyến mãi
                                 $('#itemType').val(promotion.discount_type);
                                 $('#itemValue').val(promotion.discount_value);
-                                $('#starDate').val(promotion.start_date);
+                                $('#startDate').val(promotion.start_date);
                                 $('#endDate').val(promotion.end_date);
 
                                 // Đặt trạng thái checked cho các sản phẩm có ưu đãi
@@ -222,10 +226,9 @@
                                         product.id) ? 'checked' : '';
 
                                     const productItem = `
-        <div class="product-item" data-name="${product.name.toLowerCase()}">
-            <input type="checkbox" id="product${product.id}" name="products[]" value="${product.id}" ${isChecked}>
-            <label for="product${product.id}">${product.name}</label>
-        </div>`;
+                                    <div class="product-item" data-name="${product.name.toLowerCase()}">
+                                    <input type="checkbox" id="product${product.id}" name="products[]" value="${product.id}" ${isChecked}>
+                                    <label for="product${product.id}">${product.name}</label></div>`;
 
                                     productList.append(productItem);
                                 });
