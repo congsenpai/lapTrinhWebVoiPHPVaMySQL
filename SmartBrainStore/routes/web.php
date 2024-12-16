@@ -92,6 +92,6 @@ Route::get('admin/voucher', [VoucherController::class, 'showAdminVoucherForm'])-
 Route::get('/admin/promotion', [PromotionController::class, 'getPromotions'])->name('adminpromotion')->middleware('check.role:admin,staff');
 Route::get('admin/promotion/{id}', [PromotionController::class, 'showDetail'])->name('promotionshowdetail')->middleware('check.role:admin,staff');
 Route::post('admin/promotion', [PromotionController::class, 'store'])->name('promotion.add')->middleware('check.role:admin,staff');
-
+Route::put('/admin/promotion/{id}', [PromotionController::class, 'update'])->name('promotion.update')->middleware('check.role:admin,staff');
 // trang đổi mật khẩu
 Route::get('admin/changepassword', [AuthController::class, 'showAdminChangePassForm'])->name('adminchangepass')->middleware('check.role:admin,staff');

@@ -184,15 +184,38 @@
                 });
             });
         </script>
+        <script>
+            $(document).ready(function() {
+                // Khi form được submit, kiểm tra giá trị của select và cập nhật nếu cần
+                $('form').on('submit', function() {
+                    // Kiểm tra nếu chưa thay đổi giá trị của select, đặt lại giá trị mặc định
+                    var itemType = $('#itemType').val();
+                    if (!itemType) {
+                        $('#itemType').val('percentage'); // Đặt lại giá trị mặc định nếu không có giá trị
+                    }
+                });
+            });
+        </script>
 
         <script>
             $(document).ready(function() {
                 // Bắt sự kiện click vào nút .btn-view
                 $('.btn-view').on('click', function() {
+                    $('.btn-save').data('action', 'update'); // Đặt trạng thái là "Cập nhật"
                     const promotionId = $(this).data('id'); // Lấy ID từ nút
                     $('#promotionModalLabel').text('Thông tin chi tiết');
 
+                    $('#promotionForm').attr('method', 'POST'); // Dùng POST mặc định
+                    $('#promotionForm').attr('action', `/admin/promotion/${promotionId}`);
+                    // Thêm trường ẩn để giả lập PUT method
+                    if ($('input[name="_method"]').length === 0) {
+                        $('#promotionForm').append('<input type="hidden" name="_method" value="PUT">');
+                    }
+                    $('#promotionModal').on('hidden.bs.modal', function() {
+                        $('input[name="_method"]').remove(); // Xóa trường _method khi đóng modal
+                    });
                     // Gửi yêu cầu AJAX để lấy chi tiết khuyến mãi
+
                     $.ajax({
                         url: `/admin/promotion/${promotionId}`, // Đường dẫn API hoặc route để lấy dữ liệu
                         type: 'GET',
@@ -200,10 +223,13 @@
                             // Kiểm tra dữ liệu trả về từ server
                             if (response.success) {
                                 const promotion = response
-                                    .promotion; // Dữ liệu khuyến mãi từ server
+                                .promotion; // Dữ liệu khuyến mãi từ server
                                 const products = response.product;
-                                const productsUsingPromotion = response
-                                    .productsUsingPromotion; // Danh sách sản phẩm có ưu đãi
+                                const productsUsingPromotion = Array.isArray(response
+                                        .productsUsingPromotion) ?
+                                    response.productsUsingPromotion :
+                                    Object.values(response
+                                    .productsUsingPromotion); // Chuyển thành mảng nếu không phải là mảng
                                 console.log(promotion);
 
                                 // Đổ dữ liệu vào các trường trong modal
@@ -222,7 +248,6 @@
                                 console.log(products);
                                 console.log(productsUsingPromotion);
 
-
                                 products.forEach(product => {
                                     // Kiểm tra xem sản phẩm có trong danh sách productsUsingPromotion không
                                     const isChecked = productsUsingPromotion.some(
@@ -230,15 +255,14 @@
                                         product.id) ? 'checked' : '';
 
                                     const productItem = `
-                                    <div class="product-item" data-name="${product.name.toLowerCase()}">
-                                    <input type="checkbox" id="product${product.id}" name="products[]" value="${product.id}" ${isChecked}>
-                                    <label for="product${product.id}">${product.name}</label></div>`;
+                <div class="product-item" data-name="${product.name.toLowerCase()}">
+                <input type="checkbox" id="product${product.id}" name="products[]" value="${product.id}" ${isChecked}>
+                <label for="product${product.id}">${product.name}</label></div>`;
 
                                     productList.append(productItem);
                                 });
                                 // Hiển thị modal
                                 $('#promotionModal').modal('show');
-
                             } else {
                                 alert('Không thể tải dữ liệu khuyến mãi.'); // Xử lý lỗi nếu cần
                             }
@@ -247,8 +271,8 @@
                             alert('Có lỗi xảy ra khi kết nối đến server.');
                         }
                     });
-                });
 
+                });
                 // Bắt sự kiện thay đổi trạng thái áp dụng khuyến mãi
                 $('#applyAll').on('change', function() {
                     if ($(this).is(':checked')) {
@@ -293,9 +317,9 @@
                 console.log(products);
 
                 $('.btn-add').on('click', function() {
-                    $('#btn-save').text('Lưu');
+                    $('.btn-save').data('action', 'add'); // Đặt trạng thái là "Thêm mới"
+                    $('.btn-save').text('Lưu');
                     $('#promotionModalLabel').text('Thêm mới khuyến mãi');
-
                     $('#itemCode').val('');
                     $('#itemName').val('');
                     $('#description').val('');
@@ -306,7 +330,7 @@
 
                     const productList = $('#productList');
                     productList.empty();
-
+                    // hiển thị danh sách cách sản phẩm mặc định
                     products.forEach(product => {
                         try {
                             const productItem = `
@@ -320,47 +344,6 @@
                         }
                     });
                 });
-
-                $('#btn-save').on('click', function() {
-                    // Check if the discount_type is empty or not selected, and set it to 'percentage' by default
-                    let discountType = $('#itemType').val();
-                    if (!discountType) {
-                        discountType = 'percentage'; // Default to 'percentage' if not selected
-                    }
-                    const promotionData = {
-                        name: $('#itemName').val(),
-                        description: $('#description').val(),
-                        discount_type: discountType,
-                        discount_value: $('#itemValue').val(),
-                        start_date: $('#startDate').val(),
-                        end_date: $('#endDate').val(),
-                        products: []
-                    };
-                    console.log(promotionData);
-
-                    $('#productList input[name="products[]"]:checked').each(function() {
-                        promotionData.products.push($(this).val());
-                    });
-
-                    $.ajax({
-                        url: '{{ route('promotion.add') }}',
-                        type: 'POST',
-                        data: promotionData,
-                        success: function(response) {
-                            if (response.success) {
-                                alert('Khuyến mãi đã được thêm thành công.');
-                                $('#promotionModal').modal('hide');
-                            } else {
-                                alert('Không thể thêm khuyến mãi.');
-                            }
-                        },
-                        error: function() {
-                            alert('Có lỗi xảy ra khi gửi yêu cầu.');
-                        }
-                    });
-                });
             });
         </script>
-
-        <script></script>
     @endsection
