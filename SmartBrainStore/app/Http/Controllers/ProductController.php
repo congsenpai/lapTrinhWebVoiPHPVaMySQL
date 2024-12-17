@@ -84,6 +84,27 @@ class ProductController extends Controller
 
         // Phân trang
         $products = $query->paginate(9); // 9 sản phẩm mỗi trang
+        // add product promotion is best discount
+        $totalCostAfterDiscount = $products->map(function ($product) {
+            $discount = 0;
+
+            if ($product->promotions()->exists()) {
+                // Get the best promotion
+                $maxDiscount = $product->promotions->map(function ($promotion) use ($product) {
+                    if ($promotion->discount_type === 'percentage') {
+                        return $product->price * ($promotion->discount_value / 100);
+                    } elseif ($promotion->discount_type === 'fixed') {
+                        return $promotion->discount_value;
+                    }
+                    return 0;
+                })->max();
+
+                $discount = $maxDiscount;
+            }
+
+            $product->discounted_price = max($product->price - $discount, 0);
+            return $product->discounted_price;
+        })->sum();
 
         // Kiểm tra nếu là AJAX request
         if ($request->ajax()) {
@@ -93,12 +114,13 @@ class ProductController extends Controller
 
             return response()->json([
                 'products' => $productsHtml,
-                'pagination' => $paginationHtml
+                'pagination' => $paginationHtml,
+                'totalCostAfterDiscount' => $totalCostAfterDiscount
             ]);
         }
 
         // Trả về view chính
-        return view('client.product', compact('products', 'brands', 'categories'));
+        return view('client.product', compact('products', 'brands', 'categories','totalCostAfterDiscount'));
     }
     // Trang chi tiết sản phẩm
     public function showProductDetail($id)
@@ -321,18 +343,17 @@ class ProductController extends Controller
     {
         // Lấy sản phẩm theo ID
         $product = Product::find($id);
-    
+
         // Kiểm tra nếu sản phẩm không tồn tại
         if (!$product) {
             return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại.']);
         }
-    
+
         // Cập nhật trạng thái sản phẩm thành 'deleted'
         $product->status = 'deleted';
         $product->save();
-    
+
         // Trả về phản hồi JSON
         return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa thành công.']);
     }
-    
 }

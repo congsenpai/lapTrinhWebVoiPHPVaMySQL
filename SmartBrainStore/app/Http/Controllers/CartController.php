@@ -48,7 +48,7 @@ class CartController extends Controller
             return $cartItem->id == $request->id; // Kiểm tra sản phẩm theo ID
         });
 
-        $cartCount = Cart::count();
+        $cartCount = Cart::content()->count();
 
         // Nếu số lượng sản phẩm trong giỏ hàng lớn hơn 2, dừng lại
         if ($cartCount >= 2) {
@@ -65,9 +65,9 @@ class CartController extends Controller
             $request->id,       // id của sản phẩm
             $request->name,     // tên sản phẩm
             $qty,               // số lượng, mặc định là 1
-            $request->price,    // giá sản phẩm
+            $request->discounted_price,    // giá sản phẩm
             $weight,            // trọng lượng sản phẩm (đặt mặc định là 0)
-            ['image' => $request->image]  // tùy chọn khác (như ảnh)
+            ['image' => $request->image, 'old_price'=>$request->price],// tùy chọn khác (như ảnh)
         );
         // Điều hướng đến trang giỏ hàng với thông báo thành công
         return redirect()->route('product')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');

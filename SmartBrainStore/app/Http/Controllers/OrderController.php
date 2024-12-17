@@ -9,4 +9,7 @@ class OrderController extends Controller
     public function showAdminOrderForm(){
         return view('admin.order.order');
     }
+    
+
+
 }

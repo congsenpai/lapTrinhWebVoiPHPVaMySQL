@@ -83,7 +83,8 @@
                                                             : asset('resources/images/default-product.jpg');
                                                     @endphp
                                                     <img src="{{ $imageUrl }}" alt="{{ $product->name }}"
-                                                        width="270" height="270" style="object-position: center; object-fit:full;max-height:180px"
+                                                        width="270" height="270"
+                                                        style="object-position: center; object-fit:full;max-height:180px"
                                                         class="product-thumbnail">
                                                 </a>
                                             </div>
@@ -94,25 +95,39 @@
                                                     <a href="#" class="pr-name">{{ $product->name }}</a>
                                                 </h4>
                                                 <div class="price">
-                                                    <ins><span
-                                                            class="price-amount">{{ number_format($product->price, 0) }}
-                                                            Đ</span></ins>
+                                                    @if ($product->price != $product->discounted_price)
+                                                        <ins><span
+                                                                class="price-amount new-price" style="color: red; align-self:center">{{ number_format($product->discounted_price, 0) }}
+                                                                </span></ins>
+                                                        <del><span
+                                                                class="price-amount old-price" style="color: #ccc">{{ number_format($product->price, 0) }}
+                                                                </span></del>
+                                                    @else
+                                                        <ins><span
+                                                                class="price-amount">{{ number_format($product->price, 0) }}
+                                                                </span></ins>
+                                                    @endif
                                                 </div>
+
                                             </div>
                                             <div class="slide-down-box">
                                                 <p class="message">All products are carefully selected to ensure
                                                     food
                                                     safety.</p>
-                                                <form action="{{ route('cart.add') }}" method="POST" class="buttons" style="align-items: center; display:flex; justify-content:space-between">
+                                                <form action="{{ route('cart.add') }}" method="POST" class="buttons"
+                                                    style="align-items: center; display:flex; justify-content:space-between">
                                                     @csrf
                                                     <a href="#" class="btn wishlist-btn"><i class="fa fa-heart"
                                                             aria-hidden="true"></i></a>
                                                     <input type="hidden" name="id" value="{{ $product->id }}">
                                                     <input type="hidden" name="name" value="{{ $product->name }}">
-                                                    <input type="hidden" name="price" value="{{ $product->price }}">
+                                                    <input type="hidden" name="price"
+                                                        value="{{ $product->price }}">
+                                                        <input type="hidden" name="discounted_price"
+                                                        value="{{ $product->discounted_price }}">
                                                     <input type="hidden" name="image"
                                                         value="{{ $imageUrl }}">
-                                                        <input type="hidden" name="qty" value="1">
+                                                    <input type="hidden" name="qty" value="1">
 
                                                     <button type="submit" class="btn add-to-cart-btn">
                                                         <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>

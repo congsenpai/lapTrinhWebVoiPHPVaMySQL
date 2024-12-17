@@ -42,7 +42,8 @@
                                                     <!-- Giá sản phẩm -->
                                                     <td class="product-price" data-title="Price">
                                                         <div class="price price-contain">
-                                                            <ins><span class="price-amount">{{ $item->price }}Đ</span></ins>
+                                                            <ins><span class="price-amount" style="color: red">{{$item->price }}</span></ins>
+                                                            <del><span class="price-amount old-price">{{ $item->options->old_price  }}</span></del>
                                                         </div>
                                                     </td>
                                                     
@@ -54,7 +55,7 @@
                                                     <!-- Tổng giá sản phẩm -->
                                                     <td class="product-subtotal" data-title="Total">
                                                         <div class="price price-contain">
-                                                            <ins><span class="price-amount">{{ $item->subtotal }}Đ</span></ins>
+                                                            <ins><span class="price-amount">{{ $item->subtotal }}</span></ins>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -77,12 +78,12 @@
                                 <div class="subtotal-line">
                                     <b class="stt-name">Tổng tiền hàng <span class="sub">({{ $totalItems }}
                                             items)</span></b>
-                                    <span class="stt-price">{{ number_format($subtotal) }}Đ</span>
+                                    <span class="stt-price">{{ number_format($subtotal) }}</span>
                                     <!-- Hiển thị tổng tiền sản phẩm -->
                                 </div>
                                 <div class="subtotal-line">
                                     <b class="stt-name">Phí ship</b>
-                                    <span class="stt-price">{{ number_format($shipping) }}Đ</span>
+                                    <span class="stt-price">{{ number_format($shipping) }}</span>
                                     <!-- Hiển thị phí vận chuyển -->
                                 </div>
                                 <div class="btn-checkout">
@@ -92,7 +93,7 @@
                                     <table>
                                         <tr>
                                             <td class="first-position">
-                                                <span class="index">0Đ</span>
+                                                <span class="index">0</span>
                                             </td>
                                             <td class="mid-position">
                                                 <div class="progress">
@@ -102,7 +103,7 @@
                                                 </div>
                                             </td>
                                             <td class="last-position">
-                                                <span class="index">{{ number_format($subtotal + $shipping) }}Đ</span>
+                                                <span class="index">{{ number_format($subtotal + $shipping) }}</span>
                                                 <!-- Hiển thị tổng cộng -->
                                             </td>
                                         </tr>
