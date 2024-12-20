@@ -13,16 +13,16 @@
             'url' => route('adminstaff'),
         ],
         [
-            'name' => 'adminbrand',
+            'name' => 'brand.index',
             'label' => 'Thương hiệu',
             'icon' => 'fa-copyright',
-            'url' => route('adminbrand'),
+            'url' => route('brand.index'),
         ],
         [
-            'name' => 'admincategory',
+            'name' => 'category.index',
             'label' => 'Loại sản phẩm',
             'icon' => 'fa-list',
-            'url' => route('admincategory'),
+            'url' => route('category.index'),
         ],
         [
             'name' => 'adminproduct',
@@ -31,10 +31,10 @@
             'url' => route('adminproduct'),
         ],
         [
-            'name' => 'adminorder',
+            'name' => 'adminorder.index',
             'label' => 'Hóa đơn',
             'icon' => 'fa-file-invoice',
-            'url' => route('adminorder'),
+            'url' => route('adminorder.index'),
         ],
         [
             'name' => 'admincustomer',

@@ -21,7 +21,7 @@
                     <ul class="horizontal-menu"; style="display:flex;justify-content:center; align-item:center">
                         @auth
                             <li>
-                                <a href="#" class="user-link" style="font-weight: bold">
+                                <a href="{{route('account')}}" class="user-link" style="font-weight: bold">
                                     <i class="biolife-icon icon-user"></i>Xin chào, {{ Auth::user()->name }}
                                 </a>
 
@@ -155,7 +155,13 @@
                                     </ul>
                                 </li>
 
-                                <li class="menu-item"><a href="/contact.html">Về chúng tôi</a></li>
+                                <li class="menu-item menu-item-has-children has-child"><a href="">Trang thông tin</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item"><a href="{{route('order.check')}}">Tra cứu thông tin hóa đơn</a></li>
+                                        <li class="menu-item"><a href="{{route('about')}}">Về chúng tôi</a></li>
+
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
                     </div>

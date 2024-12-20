@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Models\Coupon;
+use App\Models\Product;
 
 class CartController extends Controller
 {
@@ -37,6 +39,7 @@ class CartController extends Controller
     public function add(Request $request)
     {
 
+        // dd($request);
         // Đặt số lượng mặc định là 1 nếu không truyền số lượng
         $qty = $request->qty ?? 1;
 
@@ -59,16 +62,17 @@ class CartController extends Controller
         if ($existingItem->isNotEmpty()) {
             return redirect()->route('product')->with('info', 'Sản phẩm này đã được thêm vào giỏ hàng!');
         }
-
         // Thêm sản phẩm vào giỏ hàng
+
         Cart::add(
             $request->id,       // id của sản phẩm
             $request->name,     // tên sản phẩm
             $qty,               // số lượng, mặc định là 1
             $request->discounted_price,    // giá sản phẩm
             $weight,            // trọng lượng sản phẩm (đặt mặc định là 0)
-            ['image' => $request->image, 'old_price'=>$request->price],// tùy chọn khác (như ảnh)
+            ['image' => $request->image, 'old_price' => $request->price], // tùy chọn khác (như ảnh)
         );
+
         // Điều hướng đến trang giỏ hàng với thông báo thành công
         return redirect()->route('product')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
@@ -76,34 +80,56 @@ class CartController extends Controller
 
     // Cập nhật số lượng sản phẩm
 
-public function update(Request $request, $rowId)
-{
-    $validated = $request->validate([
-        'qty' => 'required|integer|min:1|max:20',
-    ]);
+    public function update(Request $request, $rowId)
+    {
+        $validated = $request->validate([
+            'qty' => 'required|integer|min:1|max:20',
+        ]);
 
-    // Update the quantity in the cart
-    Cart::update($rowId, $validated['qty']);
+        // Lấy sản phẩm từ giỏ hàng hoặc cơ sở dữ liệu
+        $cartItem = Cart::get($rowId);
+        $product = Product::find($cartItem->id); // Giả sử bạn có bảng sản phẩm
 
-    // Redirect back with a success message
-    return redirect()->back()->with('success', 'Quantity updated successfully.');
-}
+        // Kiểm tra tồn kho
+        if ($validated['qty'] > $product->stock) {
+            return redirect()->back()->withErrors([
+                'qty' => 'Số lượng yêu cầu vượt quá tồn kho hiện tại.',
+            ]);
+        }
 
-public function updateAll(Request $request)
-{
-    $validated = $request->validate([
-        'quantities' => 'required|array',
-        'quantities.*' => 'required|integer|min:1|max:20',
-    ]);
+        // Update the quantity in the cart
+        Cart::update($rowId, $validated['qty']);
 
-    foreach ($validated['quantities'] as $rowId => $qty) {
-        Cart::update($rowId, $qty);
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Quantity updated successfully.');
+    }
+    public function updateAll(Request $request)
+    {
+        $validated = $request->validate([
+            'quantities' => 'required|array',
+            'quantities.*' => 'required|integer|min:1|max:20',
+        ]);
+
+        foreach ($validated['quantities'] as $rowId => $qty) {
+            $cartItem = Cart::get($rowId);
+            $product = Product::find($cartItem->id); // Giả sử bạn có bảng sản phẩm
+
+            // Kiểm tra tồn kho
+            if ($qty > $product->stock) {
+                return redirect()->route('cart.index')->withErrors([
+                    'quantities.' . $rowId => 'Số lượng yêu cầu cho sản phẩm "' . $product->name . '" vượt quá tồn kho.',
+                ]);
+            }
+
+            // Cập nhật số lượng nếu hợp lệ
+            Cart::update($rowId, $qty);
+        }
+
+        return redirect()->route('cart.index')->with('success', 'Cập nhật số lượng toàn bộ giỏ hàng thành công.');
     }
 
-    return redirect()->route('cart.index')->with('success', 'Cập nhật số lượng toàn bộ giỏ hàng thành công.');
-}
 
-    
+
     // Xóa sản phẩm khỏi giỏ hàng
     public function remove($rowId)
     {

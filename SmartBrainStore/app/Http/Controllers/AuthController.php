@@ -190,7 +190,8 @@ class AuthController extends Controller
 
         if ($user) {
             // Update the user's password
-            $user->update(['password' => Hash::make($request->password)]);
+            $user->password = Hash::make($request->password);
+            $user->save();
 
             // Delete the token from the password_resets table to prevent reuse
             DB::table('password_resets')->where('token', $decodedToken)->delete();
@@ -254,5 +255,29 @@ class AuthController extends Controller
     public function showAdminChangePassForm(Request $request)
     {
         return view('admin.auth.changepass');
+    }
+    public function changeAdminPassword(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'old_password' => 'required', // Kiểm tra mật khẩu cũ
+            'password' => 'required|min:6|confirmed', // Mật khẩu mới và xác nhận mật khẩu
+        ]);
+
+        // Lấy người dùng hiện tại;
+        $user=User::where('id', Auth::user()->id)->first();
+
+        // Kiểm tra nếu mật khẩu cũ đúng
+        if (!Hash::check($request->old_password, $user->password)) {
+            // Nếu mật khẩu cũ không đúng, trả về thông báo lỗi
+            return back()->with('error', 'Mật khẩu cũ không chính xác.');
+        } else {
+            // Cập nhật mật khẩu mới
+            $user->password = Hash::make($request->password); // Mã hóa mật khẩu
+            $user->save(); // Lưu thay đổi
+
+            // Gửi thông báo thành công và chuyển hướng về trang trước
+            return redirect(route('dashboard'))->with('success', 'Mật khẩu đã được cập nhật thành công!');
+        }
     }
 }

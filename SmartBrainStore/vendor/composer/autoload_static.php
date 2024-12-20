@@ -164,6 +164,7 @@ class ComposerStaticInit589cc0f65c3aaa7d4e9024d545bc1974
         'C' => 
         array (
             'Cron\\' => 5,
+            'CouponCode\\' => 11,
             'Carbon\\Doctrine\\' => 16,
             'Carbon\\' => 7,
         ),
@@ -499,6 +500,10 @@ class ComposerStaticInit589cc0f65c3aaa7d4e9024d545bc1974
         array (
             0 => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron',
         ),
+        'CouponCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/atelierdisko/coupon_code/src',
+        ),
         'Carbon\\Doctrine\\' => 
         array (
             0 => __DIR__ . '/..' . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine',
@@ -523,6 +528,7 @@ class ComposerStaticInit589cc0f65c3aaa7d4e9024d545bc1974
         'App\\Http\\Controllers\\BrandController' => __DIR__ . '/../..' . '/app/Http/Controllers/BrandController.php',
         'App\\Http\\Controllers\\CartController' => __DIR__ . '/../..' . '/app/Http/Controllers/CartController.php',
         'App\\Http\\Controllers\\CategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/CategoryController.php',
+        'App\\Http\\Controllers\\CheckoutController' => __DIR__ . '/../..' . '/app/Http/Controllers/CheckoutController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\CustomerController' => __DIR__ . '/../..' . '/app/Http/Controllers/CustomerController.php',
         'App\\Http\\Controllers\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/DashboardController.php',
@@ -653,6 +659,7 @@ class ComposerStaticInit589cc0f65c3aaa7d4e9024d545bc1974
         'Carbon\\WeekDay' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/WeekDay.php',
         'Carbon\\WrapperClock' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/WrapperClock.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'CouponCode\\CouponCode' => __DIR__ . '/..' . '/atelierdisko/coupon_code/src/CouponCode.php',
         'Cron\\AbstractField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/AbstractField.php',
         'Cron\\CronExpression' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/CronExpression.php',
         'Cron\\DayOfMonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/DayOfMonthField.php',

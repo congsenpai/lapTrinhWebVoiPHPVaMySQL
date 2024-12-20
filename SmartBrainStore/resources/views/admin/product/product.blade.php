@@ -1,3 +1,4 @@
+
 @extends('admin.layouts.app')
 @section('content')
     <section class="p-3" style="padding-right: 30px">

@@ -226,6 +226,7 @@ class ProductController extends Controller
     // Lưu sản phẩm mới
     public function store(Request $request)
     {
+        // dd($request);
         // Các trường bắt buộc
         $requiredFields = ['name', 'price', 'stock', 'category_id', 'brand_id'];
 

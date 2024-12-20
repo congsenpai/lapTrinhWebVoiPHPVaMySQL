@@ -1,7 +1,6 @@
 @extends('client.layouts.app')
 @section('content')
     <div class="page-contain shopping-cart">
-
         <!-- Main content -->
         <div id="main-content" class="main-content" style="padding-bottom:40px">
             <div class="container">
@@ -27,49 +26,58 @@
                                             @foreach ($cartItems as $item)
                                                 <tr class="cart_item">
                                                     <!-- Hình ảnh và tên sản phẩm -->
-                                                    <td class="product-thumbnail" data-title="Product Name" style="display:flex;align-items:center;">
+                                                    <td class="product-thumbnail" data-title="Product Name"
+                                                        style="display:flex;align-items:center;">
                                                         <div class="action">
-                                                            <a href="{{ route('cart.remove', $item->rowId) }}" class="remove"><i class="fa-solid fa-trash"></i></a>
+                                                            <a href="{{ route('cart.remove', $item->rowId) }}"
+                                                                class="remove"><i class="fa-solid fa-trash"></i></a>
                                                         </div>
                                                         <a class="prd-thumb" href="#">
                                                             <figure>
-                                                                <img width="113" height="113" src="{{ $item->options->image }}" alt="{{ $item->name }}">
+                                                                <img width="113" height="113"
+                                                                    src="{{ $item->options->image }}"
+                                                                    alt="{{ $item->name }}">
                                                             </figure>
                                                         </a>
                                                         <a class="prd-name" href="#">{{ $item->name }}</a>
                                                     </td>
-                                                    
+
                                                     <!-- Giá sản phẩm -->
                                                     <td class="product-price" data-title="Price">
                                                         <div class="price price-contain">
-                                                            <ins><span class="price-amount" style="color: red">{{$item->price }}</span></ins>
-                                                            <del><span class="price-amount old-price">{{ $item->options->old_price  }}</span></del>
+                                                            <ins><span class="price-amount"
+                                                                    style="color: red">{{ $item->price }}</span></ins>
+                                                            <del><span
+                                                                    class="price-amount old-price">{{ $item->options->old_price }}</span></del>
                                                         </div>
                                                     </td>
-                                                    
+
                                                     <!-- Số lượng -->
                                                     <td class="product-quantity" data-title="Quantity">
-                                                        <input type="number" name="quantities[{{ $item->rowId }}]" value="{{ $item->qty }}" min="1" max="20">
+                                                        <input type="number" name="quantities[{{ $item->rowId }}]"
+                                                            value="{{ $item->qty }}" min="1" max="20">
                                                     </td>
-                                                    
+
                                                     <!-- Tổng giá sản phẩm -->
                                                     <td class="product-subtotal" data-title="Total">
                                                         <div class="price price-contain">
-                                                            <ins><span class="price-amount">{{ $item->subtotal }}</span></ins>
+                                                            <ins><span
+                                                                    class="price-amount">{{ $item->subtotal }}</span></ins>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                             <tr class="cart_item wrap-buttons">
                                                 <td class="wrap-btn-control" colspan="4">
-                                                    <a href="{{ route('product') }}" class="btn back-to-shop">Back to Shop</a>
+                                                    <a href="{{ route('product') }}" class="btn back-to-shop">Back to
+                                                        Shop</a>
                                                     <button class="btn btn-update" type="submit">Update all</button>
                                                     <a class="btn btn-clear" href="{{ route('cart.clear') }}">Clear all</a>
                                                 </td>
                                             </tr>
                                         </form>
                                     </tbody>
-                                    
+
                                 </table>
                             </form>
                         </div>
@@ -87,7 +95,7 @@
                                     <!-- Hiển thị phí vận chuyển -->
                                 </div>
                                 <div class="btn-checkout">
-                                    <a href="#" class="btn checkout">Check out</a>
+                                    <a href="{{route('checkout')}}" class="btn checkout">Check out</a>
                                 </div>
                                 <div class="biolife-progress-bar">
                                     <table>

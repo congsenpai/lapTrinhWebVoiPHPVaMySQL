@@ -79,6 +79,63 @@
             "install-path": "../anayarojo/shoppingcart"
         },
         {
+            "name": "atelierdisko/coupon_code",
+            "version": "v1.0.0",
+            "version_normalized": "1.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mariuswilms/coupon_code.git",
+                "reference": "df5683fd0fcf1f8c197ffe03ec50e08b7f2dd7fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mariuswilms/coupon_code/zipball/df5683fd0fcf1f8c197ffe03ec50e08b7f2dd7fe",
+                "reference": "df5683fd0fcf1f8c197ffe03ec50e08b7f2dd7fe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.0.0"
+            },
+            "suggest": {
+                "ext-mcrypt": "The mcrypt extension must be installed if /dev/urandom is not available."
+            },
+            "time": "2015-02-13T11:05:53+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "CouponCode\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-clause"
+            ],
+            "authors": [
+                {
+                    "name": "Atelier Disko",
+                    "homepage": "http://atelierdisko.de"
+                }
+            ],
+            "description": "PHP library to generate and validate coupon code strings.",
+            "homepage": "https://github.com/atelierdisko/coupon_code",
+            "keywords": [
+                "code",
+                "coupon",
+                "key",
+                "token",
+                "voucher"
+            ],
+            "support": {
+                "issues": "https://github.com/mariuswilms/coupon_code/issues",
+                "source": "https://github.com/mariuswilms/coupon_code/tree/v1.0.0"
+            },
+            "install-path": "../atelierdisko/coupon_code"
+        },
+        {
             "name": "brick/math",
             "version": "0.12.1",
             "version_normalized": "0.12.1.0",
