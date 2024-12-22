@@ -54,13 +54,11 @@
                 });
             @endif
         
-            @if ($errors->any())
-                @foreach ($errors->all() as $error)
-                    toastr.error("{{ $error }}", '', {
-                        timeOut: 5000,
-                        positionClass: 'toast-bottom-right'
-                    });
-                @endforeach
+            @if (session('error'))
+                toastr.error("{{ session('error') }}", '', {
+                    timeOut: 5000,
+                    positionClass: 'toast-bottom-right'
+                });
             @endif
         </script>
         

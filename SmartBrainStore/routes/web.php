@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\HistoryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
@@ -66,7 +67,11 @@ Route::get('/checkout/vnPayCheck', [CheckoutController::class, 'vnPayCheck'])->n
 // trang tra cứu thông tin hóa đơn
 Route::get('/order/check', [OrderController::class, 'checkOrderForm'])->name('order.check');
 Route::post('/order/check/result', [OrderController::class, 'checkOrder'])->name('order.check.result');
-Route::get('/order/check/result', [OrderController::class, 'checkOrder'])->name('order.check.result');
+Route::get('/order/history', [HistoryController::class, 'index'])->name('order.history');
+Route::get('/order/history/{id}', [HistoryController::class, 'showDetail'])->name('order.history.detail');
+Route::get('/order/update-status/{id}', [OrderController::class, 'updateStatusClient'])->name('order.update-status');
+
+// trang about us
 Route::get('/about', function () {
     return view('client.aboutus');
 })->name('about');

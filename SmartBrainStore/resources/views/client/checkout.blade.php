@@ -199,12 +199,14 @@
                                                     </div>
                                                 </span>
                                             </div>
-                                            <div class="addCoupon">
-                                                <div class="form-row">
-                                                    <label for="coupon_code">Mã Coupon:</label>
-                                                    <input type="text" id="coupon_code" name="coupon_code">
+                                            @if (Auth::check())
+                                                <div class="addCoupon">
+                                                    <div class="form-row">
+                                                        <label for="coupon_code">Mã Coupon:</label>
+                                                        <input type="text" id="coupon_code" name="coupon_code">
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endif
                                         </li>
                                         <br>
                                         <li>

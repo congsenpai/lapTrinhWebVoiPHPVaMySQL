@@ -8,6 +8,19 @@ use App\Models\User;
 
 class OrderController extends Controller
 {
+    public function updateStatusClient($id)
+    {
+        $order = Order::find($id);
+        // dd($order);
+        if (!$order) {
+            return redirect(route('order.history'))->with('error', 'Không tìm thấy đơn hàng.');
+        }
+        $order->status = 'cancelled';
+        $order->save();
+
+        return redirect(route('order.history'))->with('success', 'Cập nhật trạng thái đơn hàng thành công.');
+    }
+
 
     public function showAdminOrderForm()
     {
@@ -52,7 +65,7 @@ class OrderController extends Controller
         }
 
         // Tìm tất cả đơn hàng dựa trên user_id
-        $orders = Order::where('user_id', $user->id)->paginate(10);  // Sử dụng phân trang
+        $orders = Order::where('user_id', $user->id)->get();  // Sử dụng phân trang
 
 
         // Nếu không có đơn hàng nào, trả về thông báo

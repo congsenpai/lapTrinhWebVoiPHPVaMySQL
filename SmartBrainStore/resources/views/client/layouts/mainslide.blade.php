@@ -14,8 +14,8 @@
                     <h3 class="second-line">100% nguyên chất</h3>
                     <p class="third-line">Sản phẩm tiêu biểu của chúng tôi</p>
                     <p class="buttons">
-                        <a href="#" class="btn btn-bold">Mua sắm ngay</a>
-                        <a href="#" class="btn btn-thin">Xem thông tin doanh nghiệp</a>
+                        <a href="{{route('product')}}" class="btn btn-bold">Mua sắm ngay</a>
+                        <a href="{{route('about')}}" class="btn btn-thin">Xem thông tin doanh nghiệp</a>
                     </p>
                 </div>
             </div>
@@ -30,8 +30,8 @@
                     <h3 class="second-line">Sữa trái cây tươi mát</h3>
                     <p class="third-line">Sản phẩm tiêu biểu của nhóm trái cây chế biến</p>
                     <p class="buttons">
-                        <a href="#" class="btn btn-bold">Mua sắm ngay</a>
-                        <a href="#" class="btn btn-thin">Xem thông tin doanh nghiệp</a>
+                        <a href="{{route('product')}}" class="btn btn-bold">Mua sắm ngay</a>
+                        <a href="{{route('about')}}" class="btn btn-thin">Xem thông tin doanh nghiệp</a>
                     </p>
                 </div>
             </div>

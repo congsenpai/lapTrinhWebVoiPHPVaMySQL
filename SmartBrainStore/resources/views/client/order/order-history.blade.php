@@ -7,11 +7,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Tra cứu đơn hàng</h2>
-                        <div class="breadcrumb__option">
-                            <a href="/">Trang chủ</a>
-                            <a href="{{ route('order.check') }}">Tra cứu đơn hàng</a>
-                        </div>
+                        <h2>Lịch sử đơn hàng</h2>
                     </div>
                 </div>
             </div>
@@ -39,6 +35,7 @@
                                                 <th class="text-center">Phương thức thanh toán</th>
                                                 <th class="text-center">Trạng thái</th>
                                                 <th class="text-center">Tổng tiền</th>
+                                                <th class="text-center">Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -51,13 +48,30 @@
                                                     <td class="text-center">{{ $order->payment->payment_method }}</td>
                                                     <td class="text-center">{{ $order->status }}</td>
                                                     <td class="text-center">{{ number_format($order->total_amount) }}đ</td>
+                                                    <td class="text-center">
+                                                        <a href="{{ route('order.history.detail', ['id' => $order->id]) }}"
+                                                            class="btn btn-info btn-sm btn-view">Xem</a>
+                                                        @if ($order->status == 'pending')
+                                                            <a href="{{ route('order.update-status', ['id' => $order->id]) }}"
+                                                                class="btn btn-danger btn-sm btn-cancel">
+                                                                Hủy đơn
+                                                            </a>
+                                                        @else
+                                                            <button class="btn btn-danger btn-sm btn-cancel"
+                                                                data-id="{{ $order->id }}" disabled>Hủy
+                                                                đơn</button>
+                                                        @endif
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 @endif
                             </div>
-                        </div>  
+                        </div>
+                        <div class="text-center">
+                            {{ $orders->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

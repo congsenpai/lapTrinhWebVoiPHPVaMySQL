@@ -50,21 +50,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="flt-item to-right">
-                                <span class="flt-title">Sắp xếp</span>
-                                <div class="wrap-selectors">
-                                    <div class="selector-item orderby-selector">
-                                        <select name="orderby" class="orderby" aria-label="Shop order">
-                                            <option value="menu_order" selected="selected">Mặc định</option>
-                                            <option value="popularity">Độ phổ biến</option>
-                                            <option value="rating">Đánh giá</option>
-                                            <option value="date">Mới nhất</option>
-                                            <option value="price">Giá từ thấp đến cao</option>
-                                            <option value="price-desc">Giá từ cao đến thấp</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                         <div class="row">
                             <ul class="products-list" style="display: flex; flex-wrap: wrap;">

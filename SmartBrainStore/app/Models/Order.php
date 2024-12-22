@@ -10,23 +10,28 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
     use SoftDeletes;
+
     protected $fillable = ['user_id', 'total_amount', 'discount', 'coupon_id', 'status'];
 
+    // Quan hệ với User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    // Quan hệ với Coupon
     public function coupon()
     {
         return $this->belongsTo(Coupon::class);
     }
 
+    // Quan hệ với OrderItems
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
     }
 
+    // Quan hệ với Payment
     public function payment()
     {
         return $this->hasOne(Payment::class);

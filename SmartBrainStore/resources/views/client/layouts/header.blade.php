@@ -159,7 +159,7 @@
                                     <ul class="sub-menu">
                                         <li class="menu-item"><a href="{{route('order.check')}}">Tra cứu thông tin hóa đơn</a></li>
                                         <li class="menu-item"><a href="{{route('about')}}">Về chúng tôi</a></li>
-
+                                        <li class="menu-item"><a href="{{route('order.history')}}">Lịch sử đơn hàng</a></li>
                                     </ul>
                                 </li>
                             </ul>
