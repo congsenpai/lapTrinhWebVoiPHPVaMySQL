@@ -80,7 +80,7 @@ class VoucherController extends Controller
         // Trả về thông báo thành công
         return redirect()->route('adminvoucher')->with('success', 'Coupon đã được cập nhật thành công!');
     }
-    
+
 
     /**
      * Xóa coupon
@@ -102,7 +102,10 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = Coupon::all();
+        // Lấy danh sách voucher với phân trang, giả sử mỗi trang hiển thị 10 mục
+        $vouchers = Coupon::paginate(10);
+
+        // Trả về view với dữ liệu phân trang
         return view('admin.voucher.list', compact('vouchers'));
     }
 }

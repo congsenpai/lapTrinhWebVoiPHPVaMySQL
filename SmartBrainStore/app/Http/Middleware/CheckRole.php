@@ -16,10 +16,14 @@ class CheckRole
         }
         $user = Auth::user();
 
-        if (!in_array($user->role, $roles)) {
+        if ($user->role === 'staff'&& !in_array('staff', $roles)) {
+            // Nếu role là staff, chuyển hướng về trang dashboard
+            return redirect()->route('dashboard')->with('error', 'Bạn không có quyền truy cập vào trang này.');
+        } elseif (!in_array($user->role, $roles)) {
             // Nếu không phải role hợp lệ, chuyển hướng về trang khác
             return redirect()->route('index')->with('error', 'Bạn không có quyền truy cập vào trang này.');
         }
+        
 
         return $next($request);
     }

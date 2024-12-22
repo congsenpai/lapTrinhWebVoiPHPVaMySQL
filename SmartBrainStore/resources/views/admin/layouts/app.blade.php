@@ -25,36 +25,34 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 </head>
 
 <body>
-    <script>
-        @if (session('success'))
-            toastr.success("{{ session('success') }}", '', {
+        <script>
+            @if (session('success'))
+                toastr.success("{{ session('success') }}", '', {
+                    timeOut: 2000,
+                    positionClass: 'toast-bottom-right'
+                });
+            @endif
+
+            @if (session('error'))
+            toastr.error("{{ session('error') }}", '', {
                 timeOut: 2000,
                 positionClass: 'toast-bottom-right'
             });
         @endif
-    
-        @if ($errors->any())
-            @foreach ($errors->all() as $error)
-                toastr.error("{{ $error }}", '', {
-                    timeOut: 2000,
-                    positionClass: 'toast-bottom-right'
-                });
-            @endforeach
-        @endif
-    </script>
+        </script>
     <div class="container" style="width: 100%;margin: 0;padding: 0;">
-        <div class="row">
-            <div class="col-md-3" >@include('admin.layouts.sidebar')</div>
-            <div class="col-md-9" style="padding-left: 80px">
+        <div class="row d-flex" style="height: 100vh;">
+            <div class="col-md-3" style="height:100%; background-color:#2f4050">@include('admin.layouts.sidebar')</div>
+            <div class="col-md-9" style="padding-left: 60px">
                 @include('admin.layouts.navbar')
                 <main>
                     @yield('content')
                 </main>
             </div>
         </div>
-
     </div>
 </body>

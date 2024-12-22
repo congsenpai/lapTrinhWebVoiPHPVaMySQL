@@ -4,14 +4,14 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="d-flex align-items-center justify-content-between mb-4"style="padding-bottom: 12px">
                     <h5 class="card-title fw-semibold mb-4">Khuyến mãi</h5>
-                    <form class="product-search d-flex">
+                    <form class="product-search d-flex align-items-center">
                         <input type="text" class="border border-1 border-primary rounded px-2" value="{{request('name')}}"
                         placeholder="Tên khuyến mãi" name="name" style="margin-right: 10px">
-                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                        <button type="submit" class="btn btn-primary" style="height:34px">Tìm kiếm</button>
                     </form>
-                    <a href="{{route('voucher.create')}}" class="btn btn-primary m-1">Tạo mới</a>
+                    <a href="{{route('voucher.create')}}" class="btn btn-primary m-1" style="margin-left:5px">Tạo mới</a>
                 </div>
             <div class="table-responsive">
                 <table class="table text-nowrap mb-0 align-middle">
@@ -69,13 +69,13 @@
                                     @endif
                                 </td>
 
-                                <td class="border-bottom-0 text-center d-flex justify-content-center">
-                                    <a href="{{ route('voucher.edit', $voucher) }}" class="btn btn-outline-secondary m-1">Sửa</a>
+                                <td class="border-bottom-0 text-center d-flex justify-content-center align-items-center">
+                                    <a href="{{ route('voucher.edit', $voucher) }}" class="btn btn-outline-secondary btn-info m-1" style="height: 34px">Sửa</a>
                                     <form action="{{ route('voucher.destroy', $voucher) }}" method="POST">
                                         @method('DELETE')
                                         @csrf
                                         <button onclick="return confirm('Bạn có chắc chắn muốn xóa voucher này không?')"
-                                            type="submit" class="btn btn-outline-danger m-1">Xóa</button>
+                                            type="submit" class="btn btn-outline-danger btn-danger m-1"style="margin: 0 0 0 5px">Xóa</button>
                                     </form>
                                 </td>
                             </tr>
@@ -84,6 +84,10 @@
                 </table>
             </div>
         </div>
+        <div id="pagination" class="row"
+                    style="display: flex; align-items:center; justify-content:center; padding:8px">
+                    {{ $vouchers->links() }}
+                </div>
     </div>
 </div>
 @endsection

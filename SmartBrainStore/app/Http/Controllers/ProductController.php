@@ -120,17 +120,44 @@ class ProductController extends Controller
         }
 
         // Trả về view chính
-        return view('client.product', compact('products', 'brands', 'categories','totalCostAfterDiscount'));
+        return view('client.product', compact('products', 'brands', 'categories', 'totalCostAfterDiscount'));
     }
     // Trang chi tiết sản phẩm
     public function showProductDetail($id)
     {
-        // Tìm sản phẩm theo ID và lấy thông tin brand, category và images
-        $product = Product::with(['brand', 'category', 'images'])->findOrFail($id);
+        // Tìm sản phẩm theo ID và lấy thông tin brand, category, images
+        $product = Product::with(['brand', 'category', 'images', 'promotions'])->findOrFail($id);
 
-        // Trả về dữ liệu JSON với thông tin sản phẩm, thương hiệu, danh mục và hình ảnh
-        return view('client.layouts.singleproduct', ['product' => $product]);
+        // Logic tính giá trị sau khi giảm giá cho sản phẩm
+        $discount = 0;
+
+        // Kiểm tra nếu sản phẩm có khuyến mãi
+        if ($product->promotions()->exists()) {
+            // Lấy khuyến mãi có giá trị giảm giá cao nhất
+            $maxDiscount = $product->promotions->map(function ($promotion) use ($product) {
+                if ($promotion->discount_type === 'percentage') {
+                    // Tính phần trăm giảm giá
+                    return $product->price * ($promotion->discount_value / 100);
+                } elseif ($promotion->discount_type === 'fixed') {
+                    // Tính giá trị giảm giá cố định
+                    return $promotion->discount_value;
+                }
+                return 0;
+            })->max();
+
+            $discount = $maxDiscount;
+        }
+
+        // Tính giá sản phẩm sau giảm giá, đảm bảo không âm
+        $product->discounted_price = max($product->price - $discount, 0);
+
+        // Trả về thông tin sản phẩm và giá trị giảm giá đến view
+        return view('client.layouts.singleproduct', [
+            'product' => $product
+        ]);
     }
+
+
     public function showProductDetailJson($id)
     {
         // Tìm sản phẩm theo ID và lấy thông tin brand, category và images

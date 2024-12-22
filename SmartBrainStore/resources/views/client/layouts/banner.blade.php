@@ -7,25 +7,16 @@
                     <div class="banner-contain">
                         <div class="media">
                             <a href="#" class="bn-link">
-                                <figure><img src="{{ Vite::asset('resources/images/home-03/bn_special_org.jpg') }}"
+                                <figure><img src="{{ Vite::asset('resources/images/home-03/slomotion_02_bg.png') }}"
                                         width="616" height="483" alt=""></figure>
                             </a>
                         </div>
                         <div class="text-content">
-                            <b class="first-line">Hoa quả thái</b>
+                            <b class="first-line">Ớt chuông ba màu</b>
                             <span class="second-line">Một sản phẩm của SmartBrain</span>
                             <span class="third-line"><i>Cảm nhận hương vị thiên nhiên</i></span>
                             <div class="product-detail">
                                 <h4 class="product-name">Chúc quý khách ngon miệng</h4>
-                                <div class="price price-contain">
-                                    <ins><span class="price-amount"><span
-                                                class="currencySymbol"></span>85.000</span></ins>
-                                    <del><span class="price-amount"><span
-                                                class="currencySymbol"></span>95.000</span></del>
-                                </div>
-                                <div class="buttons">
-                                    <a href="#" class="btn add-to-cart-btn">thêm vào giỏ hàng</a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -35,25 +26,16 @@
                     <div class="banner-contain">
                         <div class="media">
                             <a href="#" class="bn-link">
-                                <figure><img src="{{ Vite::asset('resources/images/home-03/bn_special_org.jpg') }}"
+                                <figure><img src="{{ Vite::asset('resources/images/home-03/product_deal_330x330.jpg') }}"
                                         width="616" height="483" alt=""></figure>
                             </a>
                         </div>
                         <div class="text-content">
-                            <b class="first-line">Hoa quả thái</b>
+                            <b class="first-line">Chanh tươi</b>
                             <span class="second-line">Một sản phẩm của SmartBrain</span>
                             <span class="third-line"><i>Cảm nhận hương vị thiên nhiên</i></span>
                             <div class="product-detail">
                                 <h4 class="product-name">Chúc quý khách ngon miệng</h4>
-                                <div class="price price-contain">
-                                    <ins><span class="price-amount"><span
-                                                class="currencySymbol"></span>85.000</span></ins>
-                                    <del><span class="price-amount"><span
-                                                class="currencySymbol"></span>95.000</span></del>
-                                </div>
-                                <div class="buttons">
-                                    <a href="#" class="btn add-to-cart-btn">thêm vào giỏ hàng</a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -63,25 +45,16 @@
                     <div class="banner-contain">
                         <div class="media">
                             <a href="#" class="bn-link">
-                                <figure><img src="{{ Vite::asset('resources/images/home-03/bn_special_org.jpg') }}"
+                                <figure><img src="{{ Vite::asset('resources/images/home-03/product_deal-02_330x330.jpg') }}"
                                         width="616" height="483" alt=""></figure>
                             </a>
                         </div>
                         <div class="text-content">
-                            <b class="first-line">Hoa quả thái</b>
+                            <b class="first-line">Chanh vàng</b>
                             <span class="second-line">Một sản phẩm của SmartBrain</span>
                             <span class="third-line"><i>Cảm nhận hương vị thiên nhiên</i></span>
                             <div class="product-detail">
                                 <h4 class="product-name">Chúc quý khách ngon miệng</h4>
-                                <div class="price price-contain">
-                                    <ins><span class="price-amount"><span
-                                                class="currencySymbol"></span>85.000</span></ins>
-                                    <del><span class="price-amount"><span
-                                                class="currencySymbol"></span>95.000</span></del>
-                                </div>
-                                <div class="buttons">
-                                    <a href="#" class="btn add-to-cart-btn">thêm vào giỏ hàng</a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -102,15 +75,6 @@
                             <span class="third-line"><i>Cảm nhận hương vị thiên nhiên</i></span>
                             <div class="product-detail">
                                 <h4 class="product-name">Chúc quý khách ngon miệng</h4>
-                                <div class="price price-contain">
-                                    <ins><span class="price-amount"><span
-                                                class="currencySymbol"></span>85.000</span></ins>
-                                    <del><span class="price-amount"><span
-                                                class="currencySymbol"></span>95.000</span></del>
-                                </div>
-                                <div class="buttons">
-                                    <a href="#" class="btn add-to-cart-btn">thêm vào giỏ hàng</a>
-                                </div>
                             </div>
                         </div>
                     </div>

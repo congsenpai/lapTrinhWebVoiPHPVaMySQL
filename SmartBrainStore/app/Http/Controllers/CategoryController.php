@@ -16,12 +16,18 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $name = $request->input('name');
-
+    
+        // Truy vấn với phân trang thay vì get()
         $categories = Category::when($name, function ($query, $name) {
             $query->where('name', 'LIKE', "%$name%");
-        })->orderByDesc('id')->get();
+        })
+        ->orderByDesc('id')  // Sắp xếp theo id giảm dần
+        ->paginate(5);  // Phân trang, mỗi trang hiển thị 10 mục
+    
+        // Trả về view với dữ liệu phân trang
         return view('admin.category.list', compact('categories'));
     }
+    
 
     /**
      * Show the form for creating a new resource.

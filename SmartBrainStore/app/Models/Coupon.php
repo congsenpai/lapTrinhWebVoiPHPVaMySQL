@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Coupon extends Model
 {
+    use SoftDeletes;
     protected $fillable = ['code', 'discount_type', 'discount_value', 'usage_limit', 'used_count', 'start_date', 'end_date'];
 
     public function orders()

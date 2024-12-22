@@ -22,7 +22,7 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="mb-3">
+                    <div class="mb-3 d-flex align-items-center" >
                         <label for="discount_type" class="form-label">Loại giảm giá</label>
                         <select name="discount_type" class="form-select @error('discount_type') is-invalid @enderror"
                             id="discount_type">

@@ -2,5 +2,3 @@
 @section('content')
 @include('client.layouts.banner')
 @endsection
-
-    

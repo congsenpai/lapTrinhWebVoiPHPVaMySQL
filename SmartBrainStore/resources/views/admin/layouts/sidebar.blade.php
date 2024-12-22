@@ -44,7 +44,7 @@
         ],
         [
             'name' => 'adminvoucher',
-            'label' => 'Vocher',
+            'label' => 'Voucher',
             'icon' => 'fa-gem',
             'url' => route('adminvoucher'),
         ],
@@ -64,7 +64,7 @@
     ];
 @endphp
 <nav class="navbar-default navbar-static-side"
-    style="padding-left:20px;width:100%; padding-bottom:20px; background-color:#2f4050" role="navigation">
+    style="padding-left:20px;width:100%; padding-bottom:20px; background-color:#2f4050;" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header" style="border-top-left-radius: 8px; border-top-right-radius:8px">

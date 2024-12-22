@@ -15,7 +15,7 @@
 
     {{-- Họ tên--}}
     <div class="form-group row">
-        <label for="name" class="col-sm-3 col-form-label">>Tên khách hàng:</label>
+        <label for="name" class="col-sm-3 col-form-label">Tên khách hàng:</label>
         <div class="col-sm-9">
             <input type="text" name="name" id="name" class="form-control" required>
         </div>
@@ -33,7 +33,7 @@
     <div class="form-group row">
         <label for="Password" class="col-sm-3 col-form-label">Mật khẩu:</label>
         <div class="col-sm-9">
-            <input type="text" name="password" id="password" class="form-control">
+            <input type="password" name="password" id="password" class="form-control">
         </div>
     </div>
 

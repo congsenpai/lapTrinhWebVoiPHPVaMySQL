@@ -84,63 +84,62 @@ Route::post('login/admin', [AuthController::class, 'loginAsAdmin'])->name('login
 // dashboard
 Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('check.role:admin,staff');
 // trang nhân viên
-Route::get('admin/staff', [UserController::class, 'showAdminStaffForm'])->name('adminstaff')->middleware('check.role:admin,staff');
+Route::get('admin/staff', [UserController::class, 'showAdminStaffForm'])->name('adminstaff')->middleware('check.role:admin');
 // trang thương hiệu
 Route::get('/brand', [BrandController::class, 'index'])->name('brand.index');
-Route::get('/brand/create', [BrandController::class, 'create'])->name('brand.create');
-Route::post('/brand/create', [BrandController::class, 'store'])->name('brand.store');
-Route::get('/brand/edit/{brand}', [BrandController::class, 'edit'])->name('brand.edit');
-Route::post('/brand/edit/{brand}', [BrandController::class, 'update'])->name('brand.update');
-Route::delete('/brand/delete/{brand}', [BrandController::class, 'destroy'])->name('brand.destroy');
+Route::get('/brand/create', [BrandController::class, 'create'])->name('brand.create')->middleware('check.role:admin');;
+Route::post('/brand/create', [BrandController::class, 'store'])->name('brand.store')->middleware('check.role:admin');;
+Route::get('/brand/edit/{brand}', [BrandController::class, 'edit'])->name('brand.edit')->middleware('check.role:admin');;
+Route::post('/brand/edit/{brand}', [BrandController::class, 'update'])->name('brand.update')->middleware('check.role:admin');;
+Route::delete('/brand/delete/{brand}', [BrandController::class, 'destroy'])->name('brand.destroy')->middleware('check.role:admin');;
 
 // trang loại sản phẩm
 Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
 Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
-Route::post('/category/create', [CategoryController::class, 'store'])->name('category.store');
-Route::get('/category/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
-Route::post('/category/edit/{category}', [CategoryController::class, 'update'])->name('category.update');
-Route::delete('/category/delete/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
+Route::post('/category/create', [CategoryController::class, 'store'])->name('category.store')->middleware('check.role:admin');;
+Route::get('/category/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit')->middleware('check.role:admin');;
+Route::post('/category/edit/{category}', [CategoryController::class, 'update'])->name('category.update')->middleware('check.role:admin');;
+Route::delete('/category/delete/{category}', [CategoryController::class, 'destroy'])->name('category.destroy')->middleware('check.role:admin');;
 
 // trang sản phẩm
 // trang product
 Route::get('admin/product', [ProductController::class, 'getAllProduct'])->name('adminproduct')->middleware('check.role:admin,staff');
 Route::get('admin/product', [ProductController::class, 'getAdminProduct'])->name('adminproduct')->middleware('check.role:admin,staff');
-Route::post('admin/product', [ProductController::class, 'store'])->name('createproduct')->middleware('check.role:admin,staff');
-Route::put('admin/product/{id}', [ProductController::class, 'update'])->name('updateproduct')->middleware('check.role:admin,staff');
-Route::delete('admin/product/{id}', [ProductController::class, 'deleteProduct'])->name('deleteproduct')->middleware('check.role:admin,staff');;
-
+Route::post('admin/product', [ProductController::class, 'store'])->name('createproduct')->middleware('check.role:admin');
+Route::put('admin/product/{id}', [ProductController::class, 'update'])->name('updateproduct')->middleware('check.role:admin');
+Route::delete('admin/product/{id}', [ProductController::class, 'deleteProduct'])->name('deleteproduct')->middleware('check.role:admin');
 // trang hóa đơn
 Route::get('admin/order', [OrderController::class, 'showAdminOrderForm'])->name('adminorder')->middleware('check.role:admin,staff');
 // trang khách hàng
 Route::get('admin/customer', [CustomerController::class, 'showAdminCustomerForm'])->name('admincustomer')->middleware('check.role:admin,staff');
 // trang voucher
-Route::get('admin/voucher', [VoucherController::class, 'index'])->name('adminvoucher')->middleware('check.role:admin,staff');
-Route::get('/voucher/create', [VoucherController::class, 'create'])->name('voucher.create');
-Route::post('/voucher/store', [VoucherController::class, 'store'])->name('voucher.store');
-Route::get('/voucher/edit/{voucher}', [VoucherController::class, 'edit'])->name('voucher.edit');
-Route::put('/voucher/update/{voucher}', [VoucherController::class, 'update'])->name('voucher.update');
-Route::delete('/voucher/delete/{voucher}', [VoucherController::class, 'destroy'])->name('voucher.destroy');
+Route::get('admin/voucher', [VoucherController::class, 'index'])->name('adminvoucher')->middleware('check.role:admin');
+Route::get('/voucher/create', [VoucherController::class, 'create'])->name('voucher.create')->middleware('check.role:admin');
+Route::post('/voucher/store', [VoucherController::class, 'store'])->name('voucher.store')->middleware('check.role:admin');
+Route::get('/voucher/edit/{voucher}', [VoucherController::class, 'edit'])->name('voucher.edit')->middleware('check.role:admin');
+Route::put('/voucher/update/{voucher}', [VoucherController::class, 'update'])->name('voucher.update')->middleware('check.role:admin');
+Route::delete('/voucher/delete/{voucher}', [VoucherController::class, 'destroy'])->name('voucher.destroy')->middleware('check.role:admin');
 
 // trang khuyến mãi
 Route::get('/admin/promotion', [PromotionController::class, 'getPromotions'])->name('adminpromotion')->middleware('check.role:admin,staff');
 Route::get('admin/promotion/{id}', [PromotionController::class, 'showDetail'])->name('promotionshowdetail')->middleware('check.role:admin,staff');
-Route::post('admin/promotion', [PromotionController::class, 'store'])->name('promotion.add')->middleware('check.role:admin,staff');
-Route::put('/admin/promotion/{id}', [PromotionController::class, 'update'])->name('promotion.update')->middleware('check.role:admin,staff');
+Route::post('admin/promotion', [PromotionController::class, 'store'])->name('promotion.add')->middleware('check.role:admin');
+Route::put('/admin/promotion/{id}', [PromotionController::class, 'update'])->name('promotion.update')->middleware('check.role:admin');
 // trang đổi mật khẩu
 Route::get('admin/changepassword', [AuthController::class, 'showAdminChangePassForm'])->name('adminchangepass')->middleware('check.role:admin,staff');
 Route::post('admin/changepassword', [AuthController::class, 'changeAdminPassword'])->name('adminchangepass')->middleware('check.role:admin,staff');
 // trang nhân viên
 Route::get('admin/staff', [UserController::class, 'showAdminStaffForm'])->name('adminstaff')->middleware('check.role:admin,staff');
-Route::post('admin/addstaff', [UserController::class, 'store'])->name('addstaff')->middleware('check.role:admin,staff');
-Route::post('admin/updatestaff', [UserController::class, 'update'])->name('updatestaff')->middleware('check.role:admin,staff');
-Route::get('/staff/delete/{email}', [UserController::class, 'delete'])->name('deletestaff')->middleware('check.role:admin,staff');
-Route::get('/staff/search', [UserController::class, 'search'])->name('searchstaff');
+Route::post('admin/addstaff', [UserController::class, 'store'])->name('addstaff')->middleware('check.role:admin');
+Route::post('admin/updatestaff', [UserController::class, 'update'])->name('updatestaff')->middleware('check.role:admin');
+Route::get('/staff/delete/{email}', [UserController::class, 'delete'])->name('deletestaff')->middleware('check.role:admin');
+Route::get('/staff/search', [UserController::class, 'search'])->name('searchstaff')->middleware('check.role:admin,staff');
 // trang khách hàng
 Route::get('admin/customer', [CustomerController::class, 'showAdminCustomerForm'])->name('admincustomer')->middleware('check.role:admin,staff');
-Route::post('admin/addcustomer', [CustomerController::class, 'store'])->name('addcustomer')->middleware('check.role:admin,staff');
-Route::post('admin/updatecustomer', [CustomerController::class, 'update'])->name('updatecustomer')->middleware('check.role:admin,staff');
-Route::get('/customer/delete/{email}', [CustomerController::class, 'delete'])->name('deletecustomer')->middleware('check.role:admin,staff');
-Route::get('/customer/search', [CustomerController::class, 'search'])->name('searchcustomer');
+Route::post('admin/addcustomer', [CustomerController::class, 'store'])->name('addcustomer')->middleware('check.role:admin');
+Route::post('admin/updatecustomer', [CustomerController::class, 'update'])->name('updatecustomer')->middleware('check.role:admin');
+Route::get('/customer/delete/{email}', [CustomerController::class, 'delete'])->name('deletecustomer')->middleware('check.role:admin');
+Route::get('/customer/search', [CustomerController::class, 'search'])->name('searchcustomer')->middleware('check.role:admin');;
 // trang hóa đơn
 Route::get('admin/order', [OrderController::class, 'index'])->name('adminorder.index')->middleware('check.role:admin,staff');
 Route::get('admin/order/{orderid}', [OrderController::class, 'showDetailOrder'])->name('adminorder.detail')->middleware('check.role:admin,staff');

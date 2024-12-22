@@ -33,7 +33,7 @@
     <div class="form-group row">
         <label for="Password" class="col-sm-3 col-form-label">Mật khẩu:</label>
         <div class="col-sm-9">
-            <input type="text" name="password" id="password" class="form-control" required>
+            <input type="password" name="password" id="password" class="form-control" required>
         </div>
     </div>
 

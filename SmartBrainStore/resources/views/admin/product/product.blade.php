@@ -1,4 +1,3 @@
-
 @extends('admin.layouts.app')
 @section('content')
     <section class="p-3" style="padding-right: 30px">
@@ -53,8 +52,9 @@
                                         return asset('storage/' . $image->image_url);
                                     });
                                 @endphp
-                                <td> <img src="{{ $imageUrl }}" alt="{{ $product->name }}" width="50" height="50"
-                                        style="object-fit: contain" class="product-thumbnail">
+                                <td> <img src="{{ $imageUrl }}" alt="{{ $product->name }}"
+                                    style="object-fit: cover; width: 50px; height: 50px; overflow: hidden; border-radius: 5px;"
+                                    class="product-thumbnail">
                                 </td>
                                 <td> <a href="#">{{ $product->name }}</a></td>
                                 <td> <a href="#">{{ $product->price }}</a></td>
