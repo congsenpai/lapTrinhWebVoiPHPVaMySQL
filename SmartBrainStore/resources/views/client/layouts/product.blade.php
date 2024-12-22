@@ -83,9 +83,8 @@
                                                             : asset('resources/images/default-product.jpg');
                                                     @endphp
                                                     <img src="{{ $imageUrl }}" alt="{{ $product->name }}"
-                                                        width="270" height="270"
-                                                        style="object-position: center; object-fit:full;max-height:180px"
-                                                        class="product-thumbnail">
+                                                    style="object-fit: cover; width: 270px; height: 270px; overflow: hidden; border-radius: 5px;"
+                                                    class="product-thumbnail">
                                                 </a>
                                             </div>
                                             <div class="info">

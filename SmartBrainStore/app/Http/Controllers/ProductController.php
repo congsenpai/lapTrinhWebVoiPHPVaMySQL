@@ -384,4 +384,9 @@ class ProductController extends Controller
         // Trả về phản hồi JSON
         return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa thành công.']);
     }
+    public function getBestSalesProduct()
+    {
+        $products = Product::where('status', 'active')->orderBy('sales', 'desc')->take(8)->get();
+        return response()->json($products);
+    }
 }

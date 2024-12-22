@@ -66,6 +66,7 @@ Route::get('/checkout/vnPayCheck', [CheckoutController::class, 'vnPayCheck'])->n
 // trang tra cứu thông tin hóa đơn
 Route::get('/order/check', [OrderController::class, 'checkOrderForm'])->name('order.check');
 Route::post('/order/check/result', [OrderController::class, 'checkOrder'])->name('order.check.result');
+Route::get('/order/check/result', [OrderController::class, 'checkOrder'])->name('order.check.result');
 Route::get('/about', function () {
     return view('client.aboutus');
 })->name('about');
